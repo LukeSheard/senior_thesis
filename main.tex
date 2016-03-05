@@ -1,18 +1,82 @@
-\documentclass{amsart}
+\documentclass[11pt, a4paper]{report}
 
 % Document Layout
 \usepackage[margin=1in]{geometry}
 
-\usepackage{amsmath, amsthm}
+% Paragraph Spacing
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+\setlength{\baselineskip}{0em}
+\linespread{1.3}
+
+% Ams Packages
+\usepackage{amsmath, amssymb}
+
+% Tikz
+\usepackage{tikz}
+
+% Theorems
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[chapter]
+\newtheorem{example}[remark]{Example}
 
 % File Structure
 \usepackage{subfiles}
+
+% Citation Styling
+\usepackage{natbib}
+\setcitestyle{authoryear}
+
+% Abstract
+\makeatletter
+\renewenvironment{abstract}{%
+  \if@twocolumn
+    \section*{\abstractname}%
+  \else
+    \small
+    \begin{center}%
+      {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
+    \end{center}%
+    \quotation
+  \fi}
+  {\if@twocolumn\else\endquotation\fi}
+\makeatother
 
 \title{Finite Difference Schemes for the McKendrick Von Foerster Equation}
 \author{Luke Sheard}
 
 \begin{document}
+  \raggedright
+  \allowdisplaybreaks
   \maketitle
 
-  \subfile{ch2-finite_difference/index}
+  \pagenumbering{roman}
+  \begin{abstract}
+    This is my Abstract
+  \end{abstract}
+
+  \newpage
+  \tableofcontents
+
+  \newpage
+  \pagenumbering{arabic}
+  \subfile{abstract/index}
+
+  \subfile{derivation/index}
+
+  \subfile{finite_difference/index}
+
+  \subfile{method/index}
+
+  \newpage
+  \bibliographystyle{abbrvnat}
+  \bibliography{bib-article,bib-books}
 \end{document}
