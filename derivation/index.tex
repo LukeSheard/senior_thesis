@@ -45,6 +45,44 @@
     \frac{\partial n}{\partial t} + \frac{\partial}{\partial w} \left(g \cdot n \right) = - \mu \cdot n.
   \end{equation}
 
-  \section{Steady State Solutions}\label{sec:mvf:steadystate}
+  \subsection{Jump Growth Equation}
+  While the mathematical framework presented in \cite{silvert1978}, \cite{datta2010} presents a different method of describing weight indexed population under a the assumption that predation is a Markov process. The predation event extends the ideas of \cite{silvert1980} where predation is modeled the coupled death at one size to the growth of another. This is illustrated in Figure~\ref{fig:mvf:predation} where we see there are three types of predation to yield news individuals weight $w_c$.
 
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/stochastic_predation.png}
+    \caption{Figure 1 from \cite{datta2010}. The death of an individual with weight $w_b$ is attributed to the growth of another individual weight $w_a$, who consequently dies to yield a new individual with weight $w_c = w_a + K w_b$ for some predation efficiency $K$ that could be a function of weight. \label{fig:mvf:predation}}
+  \end{figure}
+
+  \begin{align}\label{eq:mvf:jump}
+    \frac{\partial \phi(w)}{\partial t}
+    = \int ( &- k(w, w') \phi(w)\phi(w') \nonumber \\
+    & - k(w, w')\phi(w')\phi(w) \nonumber \\
+    & + k(w - Kw', w')\phi(w - Kw')\phi(w')) \: \mathrm{d}w'.
+  \end{align}
+
+  The research in \cite{datta2010} yields the ``Deterministic Jump-Growth Equation'', an analytic partial differential equation derived from the macroscopic stochastic models. Equation~\ref{eq:mvf:jump} represents this model, where $K$ is the predation efficiency and $k(w, w')$ is the feeding rate for individuals weight $w$ feeding on individuals weight $w'$.
+
+  \subsection{Relation of Jump Growth Equation and McKendrick-von Foerster Equation}
+  \cite{law2009} shows that under the assumption of stochastic predation that Equation~\ref{eq:mvf:mvf} is a suitable model for population dynamics under the assumption that the growth rate of an individual with weight $w$ from feeding on smaller organizations can be expressed as
+  \begin{equation}
+    G(w) = \int K w' k(w, w') N(w') \: \mathrm{d}w',
+  \end{equation}
+
+  and similarly the per capita mortality rate at weight $w$ is modelled as
+  \begin{equation}
+    \mu(w) = \int k(w', w) N(w') \: \mathrm{d}w'.
+  \end{equation}
+
+  \cite{datta2010}, Chapter 2.5, shows that this model can be shown as an approximation to Equation~\ref{eq:mvf:jump}. By expanding the Taylor series of the last term of Equation~\ref{eq:mvf:jump} we see that
+
+  \begin{eqnarray}\label{eq:mvf:diffusion}
+    \frac{\partial \phi(w)}{\partial t}
+    &=& \int k(w', w) \phi(w)\phi(w') \: \mathrm{d}w' \nonumber \\
+    && - \frac{\partial}{\partial w} \int K w' k(w, w')\phi(w')\phi(w) \: \mathrm{d}w' \nonumber \\
+    && + \frac{1}{2} \frac{\partial}{\partial w} (K w')^2 k(w, w')\phi(w')\phi(w)  \: \mathrm{d}w' \nonumber \\
+    && + R,
+  \end{eqnarray}
+
+  for a remainder term $R$. Clearly the first two terms correspond the McKendrick-von Foerster Equation, therefore in our method for constructing a numerical scheme for the Jump Growth Equation we will focus on Equation~\ref{eq:mvf:diffusion}.
 \end{document}
