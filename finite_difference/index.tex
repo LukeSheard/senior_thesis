@@ -131,24 +131,18 @@
 
   \begin{figure}[b]
     \centering
-    \begin{tikzpicture}
-      \draw[help lines] (1,1) grid (5,5);
+    \begin{tikzpicture}[scale=0.75]
+      \draw[help lines] (1,1) grid (7,7);
 
       \draw[<->] (0.75, 2) -- (0.75, 3);
-      \node at (0, 2.5) {$\Delta t = k$};
+      \node at (0, 4.5) {$\Delta t = k$};
       \node at (0, 2) {$n-1$};
       \node at (0, 3) {$n$};
 
       \draw[<->] (2, 0.75) -- (3, 0.75);
-      \node at (2.5, 0.45) {$\Delta x = h$};
-      \node at (2, 0) {$i-1$};
-      \node at (3, 0) {$i$};
-
-      \node at (3.2, 3.2) {$P$};
-      \node at (3.2, 4.2) {$N$};
-      \node at (4.2, 3.2) {$E$};
-      \node at (3.2, 2.2) {$S$};
-      \node at (2.2, 3.2) {$W$};
+      \node at (4.5, 0.45) {$\Delta x = h$};
+      \node at (2, 0.3) {$i-1$};
+      \node at (3, 0.3) {$i$};
     \end{tikzpicture}
     \caption{Mesh Grid example}\label{fde:fig:mesh}
   \end{figure}
