@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 \documentclass[../main.tex]{subfiles}
 \begin{document}
-  \chapter{The McKendrick-von Foerster Equation}\label{chapter:derivation}
+  \chapter{Characteristic Based Population Models}\label{chapter:derivation}
 
   In this chapter we consider the models in \cite{mckendrick1926} and \cite{foerster1959} who describe a system indexed by age. We then consider of the advances in \cite{silvert1978} who describe new equations indexed by weight and the derive the standard McKendrick-von Foerster Equation for weight indexed systems.
 
@@ -14,11 +14,11 @@
 
   \subsection{The Von Foerster Equation}
   \begin{equation}\label{eq:mvf:vfeq}
-    \frac{\partial N}{\partial t} + \frac{\partial n}{\partial a} = - m(t, a)n
+    \frac{\partial n}{\partial t} + \frac{\partial n}{\partial a} = - m(a)n
   \end{equation}
 
   Following the work of \cite{trucco1965} we now describe Von Foerster's reasoning to determine Equation~\ref{eq:mvf:vfeq}. Suppose that $n(t, a)$ represents the density of individuals at time $t$ in the age category $(a, a + \Delta a)$. Then we have that
-  \begin{eqnarray}
+  \begin{eqnarray}\label{eq:mvf:derivword}
     \frac{\partial}{\partial t} \left( n(a, t) \Delta a \right)
     &=& + \mbox{ rate of entry of } a \nonumber \\
     &=& - \mbox{ rate of departure at } (a + \Delta a) \nonumber \\
@@ -27,7 +27,7 @@
 
   We can express which in mathematical terms for some \emph{flux}, $J(t, a)$, which describes that rate of movement of individuals in $(a, a + \Delta a)$ as
   \begin{equation}\label{eq:mvf:flux}
-    \frac{\partial n}{\partial t} = \frac{J(t, a) - J(t, a + \Delta a)}{\Delta a} - m(t, a) n(a, t).
+    \frac{\partial n}{\partial t} = \frac{J(t, a) - J(t, a + \Delta a)}{\Delta a} - m(a) n(a, t).
   \end{equation}
 
   for some per capita mortality rate $m$. When dealing with the flux $J$ we consider that this represents the movement of individuals in age. As individuals become older the flux can be assumed the be proportional to the density of individuals with some velocity $v(t, a)$. If the aging corresponds to the parsing of time then we have that
@@ -36,7 +36,14 @@
   and so $J(t, a) = n(t, a)$. Substituting this in it is clear that, in the limit as as $\Delta a \to 0$, Equation~\ref{eq:mvf:flux} becomes the von Foerster Equation (\ref{eq:mvf:vfeq}).
 
   \section{Weight Indexed Models}
-  \cite{silvert1978} introduced a more general construction of
+  \subsection{McKendrick-von Foerster Equation}
+  \cite{silvert1978} introduced a more general construction of the McKendrick-von Foerster Equation, notwithstanding a change from age indexed population to sized based population, in a model which allowed growth and mortality to be functions of body mass. Their changes are widely used in mathematical biology and a full derivation can be found in \cite{silvert1978}, however a simple argument is that the \emph{flux} described in Equation~\ref{eq:mvf:flux} is changed for a flux that depends on the growth of individuals
+  $$J(t, w) = g(t, w)n(t, w)$$
+
+  and $m(a)$ becomes a mortality function in weight and age $\mu(w)$. Thus the McKendrick-von Foerster Equation reads
+  \begin{equation}\label{eq:mvf:mvf}
+    \frac{\partial n}{\partial t} + \frac{\partial}{\partial w} \left(g \cdot n \right) = - \mu \cdot n.
+  \end{equation}
 
   \section{Steady State Solutions}\label{sec:mvf:steadystate}
 
