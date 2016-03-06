@@ -35,6 +35,15 @@
 \usepackage{natbib}
 \setcitestyle{authoryear}
 
+% Links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=blue,
+    linkcolor=blue,
+    urlcolor=blue
+}
+
 % Abstract
 \makeatletter
 \renewenvironment{abstract}{%
@@ -56,15 +65,20 @@
 \begin{document}
   \raggedright
   \allowdisplaybreaks
-  \maketitle
+
+  \begin{titlepage}
+    \maketitle
+  \end{titlepage}
 
   \pagenumbering{roman}
   \begin{abstract}
+    \addcontentsline{toc}{chapter}{Abstract}
     This is my Abstract
   \end{abstract}
 
   \newpage
   \tableofcontents
+  \listoffigures
 
   \newpage
   \pagenumbering{arabic}

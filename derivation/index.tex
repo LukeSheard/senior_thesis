@@ -1,5 +1,43 @@
 %!TEX root = ../main.tex
 \documentclass[../main.tex]{subfiles}
 \begin{document}
-  \chapter{Derivation of the McKendrick Von Föerster Equation}\label{chapter:derivation}
+  \chapter{The McKendrick-von Foerster Equation}\label{chapter:derivation}
+
+  In this chapter we consider the models in \cite{mckendrick1926} and \cite{foerster1959} who describe a system indexed by age. We then consider of the advances in \cite{silvert1978} who describe new equations indexed by weight and the derive the standard McKendrick-von Foerster Equation for weight indexed systems.
+
+  This work serves as the basis for \cite{datta2010}, who constructs a stochastic model for the dynamics of population, which they call the deterministic jump-growth equation. We consider the relevance of this equation in relation to the McKendrick-von Foerster Equation drawing further on the work of \cite{datta2010}.
+
+  \section{Age Indexed Models}
+  \cite{mckendrick1926} first posed the idea of modeling biological processed for medicinal science by a single characteristic. In a process of individuals meet they transfer information within the system, and if one considers these as individuals as particles in a system moving according to a dimension indexed by this single characteristic then their movement becomes a study in kinetics.
+
+  \cite{foerster1959} extended the principle equations derived in \cite{mckendrick1926} with extensions. \cite{trucco1965} gives a full rigorous discussion of the advancements made in \cite{foerster1959}. It's discussion involve considering the steady state solutions of what he calls ``The Von Foerster Equation'', which we discuss further in Section~\ref{sec:mvf:steadystate}.
+
+  \subsection{The Von Foerster Equation}
+  \begin{equation}\label{eq:mvf:vfeq}
+    \frac{\partial N}{\partial t} + \frac{\partial n}{\partial a} = - m(t, a)n
+  \end{equation}
+
+  Following the work of \cite{trucco1965} we now describe Von Foerster's reasoning to determine Equation~\ref{eq:mvf:vfeq}. Suppose that $n(t, a)$ represents the density of individuals at time $t$ in the age category $(a, a + \Delta a)$. Then we have that
+  \begin{eqnarray}
+    \frac{\partial}{\partial t} \left( n(a, t) \Delta a \right)
+    &=& + \mbox{ rate of entry of } a \nonumber \\
+    &=& - \mbox{ rate of departure at } (a + \Delta a) \nonumber \\
+    &=& - \mbox{ deaths in } (a, a + \Delta a).
+  \end{eqnarray}
+
+  We can express which in mathematical terms for some \emph{flux}, $J(t, a)$, which describes that rate of movement of individuals in $(a, a + \Delta a)$ as
+  \begin{equation}\label{eq:mvf:flux}
+    \frac{\partial n}{\partial t} = \frac{J(t, a) - J(t, a + \Delta a)}{\Delta a} - m(t, a) n(a, t).
+  \end{equation}
+
+  for some per capita mortality rate $m$. When dealing with the flux $J$ we consider that this represents the movement of individuals in age. As individuals become older the flux can be assumed the be proportional to the density of individuals with some velocity $v(t, a)$. If the aging corresponds to the parsing of time then we have that
+  $$ v = \frac{\partial a}{\partial t} = 1$$
+
+  and so $J(t, a) = n(t, a)$. Substituting this in it is clear that, in the limit as as $\Delta a \to 0$, Equation~\ref{eq:mvf:flux} becomes the von Foerster Equation (\ref{eq:mvf:vfeq}).
+
+  \section{Weight Indexed Models}
+  \cite{silvert1978} introduced a more general construction of
+
+  \section{Steady State Solutions}\label{sec:mvf:steadystate}
+
 \end{document}
