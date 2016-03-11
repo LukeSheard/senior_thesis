@@ -2,7 +2,37 @@
 \documentclass[../main.tex]{subfiles}
 \begin{document}
   \chapter{Method}\label{chapter:method}
-  This chapter outlines the method used to construct a finite difference scheme for the deterministic Jump Growth Equation, Equation~\ref{eq:mvf:diffusion}. It begins with a discussion about the steady state of the McKendrick-von Foerster Equation and how this helps to solve the Jump Growth Equation. Following this we apply the mathematics in Section~\ref{chapter:fdes}
+  This chapter outlines the method used to construct a finite difference scheme for the deterministic Jump Growth Equation, Equation~\ref{eq:mvf:diffusion}. It begins with a discussion about the steady state of the McKendrick-von Foerster Equation and how this helps to solve the Jump Growth Equation. Following this we apply the mathematics in Section~\ref{chapter:fdes} and \cite{rosinger2008} to construct a finite difference scheme that is stable and consistent, and thus convergent.
 
-  \section{Steady State Solutions}\label{sec:mvf:steadystate}
+
+  \section{Steady State Solutions}\label{sec:met:steadystate}
+  When considering hyperbolic partial differential equation problems it is important to consider the steady state solutions, that is if $\partial_t u = \mathcal{L}u$ the solutions for which $\mathcal{L}u = 0$. Thus we investigate the problem for when the Growth-Diffusion Equation (Equation~\ref{eq:mvf:diffusion}).
+
+  \cite{benoit2004} first showed that the McKendrick Von Foerster Equation has a steady state solution of the power law form $\hat{\phi}(w) \propto w^{\alpha}$, and \cite{datta2010} shows that this is also true for the Jump Growth Equation.
+
+  \subsection{Construction of Growth-Diffusion Equation}
+  In Section~\ref{sec:mvf:relation} we defined the Growth-Diffusion Equation as an approximation to the Jump-Growth Equation. We will now study this equation on it's own, disregarding the remainder term, and show that it's form is similar to a non-linear advection-diffusion transport equation. Thus we can define the growth, predation and diffusion coefficients on their own, allowing us to study the steady states.
+
+  Consider The Growth-Diffusion Equation rewritten so that we have
+  \begin{eqnarray}
+    \frac{\partial \phi(w)}{\partial t}
+    &=& \phi(w) \left( \int k(w', w) \phi(w') \: \mathrm{d}w' \right) \nonumber \\
+    && -  \frac{\partial}{\partial w} \left( \phi(w)  \int K w' k(w, w')\phi(w') \: \mathrm{d}w' \right) \nonumber \\
+    && + \frac{1}{2} \frac{\partial}{\partial w} \left( \phi(w) \int (K w')^2 k(w, w')\phi(w')  \: \mathrm{d}w' \right).
+  \end{eqnarray}
+
+  This is analogous to writing
+  \begin{equation}\label{eq:met:transport}
+    \partial_t \phi(w) = \mu(w) \phi(w) - \partial_w(G(w) \phi(w)) - \frac{1}{2} \partial_{ww} ( D(w) \phi(w)),
+  \end{equation}
+
+  where we have the coefficients $G, \mu, D$ are functions of $w$, with dependece on $\phi$. \cite{benoit2004} showed that the McKendrick von Foerster Equation has a steady state solution of the form
+  \begin{equation}
+    \phi(w) \propto w^{\alpha}
+  \end{equation}
+
+  and further \cite{datta2010} showed that the Equation~\ref{eq:met:transport} has a steady state of the same form.
+
+  \subsection{Steady State Analysis}
+  \cite{datta2011} gives a detailed investigation in to the steady state solutions of Equation~\ref{eq:met:transport}. Here we give a construction of the dimensionless form of Equation~\ref{eq:met:transport}, which has a constant steady state and therefore a easier steady state to check numerically. 
 \end{document}

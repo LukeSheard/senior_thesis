@@ -63,15 +63,15 @@
 
   The research in \cite{datta2010} yields the ``Deterministic Jump-Growth Equation'', an analytic partial differential equation derived from the macroscopic stochastic models. Equation~\ref{eq:mvf:jump} represents this model, where $K$ is the predation efficiency and $k(w, w')$ is the feeding rate for individuals weight $w$ feeding on individuals weight $w'$.
 
-  \subsection{Relation of Jump Growth Equation and McKendrick-von Foerster Equation}
+  \subsection{Relation of Jump Growth Equation and McKendrick-von Foerster Equation}\label{sec:mvf:relation}
   \cite{law2009} shows that under the assumption of stochastic predation that Equation~\ref{eq:mvf:mvf} is a suitable model for population dynamics under the assumption that the growth rate of an individual with weight $w$ from feeding on smaller organizations can be expressed as
   \begin{equation}
-    G(w) = \int K w' k(w, w') N(w') \: \mathrm{d}w',
+    G(w) = \int K w' k(w, w') \phi(w') \: \mathrm{d}w',
   \end{equation}
 
   and similarly the per capita mortality rate at weight $w$ is modelled as
   \begin{equation}
-    \mu(w) = \int k(w', w) N(w') \: \mathrm{d}w'.
+    \mu(w) = \int k(w', w) \phi(w') \: \mathrm{d}w'.
   \end{equation}
 
   \cite{datta2010}, Chapter 2.5, shows that this model can be shown as an approximation to Equation~\ref{eq:mvf:jump}. By expanding the Taylor series of the last term of Equation~\ref{eq:mvf:jump} we see that
@@ -80,9 +80,9 @@
     \frac{\partial \phi(w)}{\partial t}
     &=& \int k(w', w) \phi(w)\phi(w') \: \mathrm{d}w' \nonumber \\
     && - \frac{\partial}{\partial w} \int K w' k(w, w')\phi(w')\phi(w) \: \mathrm{d}w' \nonumber \\
-    && + \frac{1}{2} \frac{\partial}{\partial w} (K w')^2 k(w, w')\phi(w')\phi(w)  \: \mathrm{d}w' \nonumber \\
+    && + \frac{1}{2} \frac{\partial}{\partial w} \int (K w')^2 k(w, w')\phi(w')\phi(w)  \: \mathrm{d}w' \nonumber \\
     && + R,
   \end{eqnarray}
 
-  for a remainder term $R$. Clearly the first two terms correspond the McKendrick-von Foerster Equation, therefore in our method for constructing a numerical scheme for the Jump Growth Equation we will focus on Equation~\ref{eq:mvf:diffusion}.
+  for a remainder term $R$. Clearly the first two terms correspond the McKendrick-von Foerster Equation. Therefore in our method for constructing a numerical scheme for the Jump Growth Equation we will focus on Equation~\ref{eq:mvf:diffusion}, which we call the Growth-Diffusion Equation, since it is numerically easier to compute.
 \end{document}
