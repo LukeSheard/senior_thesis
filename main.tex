@@ -1,3 +1,5 @@
+%! TEX program = pdflatex
+
 \documentclass[11pt, a4paper]{report}
 
 % Document Layout
@@ -9,6 +11,9 @@
 
 % Ams Packages
 \usepackage{amsmath, amssymb}
+
+% Appendix
+\usepackage[toc,page]{appendix}
 
 % Tikz
 \usepackage{tikz}
@@ -34,6 +39,7 @@
 \setcitestyle{authoryear}
 
 % Links
+\usepackage{varioref}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
@@ -57,6 +63,8 @@
   {\if@twocolumn\else\endquotation\fi}
 \makeatother
 
+\newcommand{\e}[1]{ \operatorname{e}^{#1}}
+
 \title{Finite Difference Schemes for the McKendrick Von Foerster Equation}
 \author{Luke Sheard}
 
@@ -75,8 +83,8 @@
   \end{abstract}
 
   \newpage
-  \tableofcontents
   \listoffigures
+  \tableofcontents
 
   % Set Options for Main Document
   \setlength{\parskip}{0.5em}
@@ -88,6 +96,10 @@
   \subfile{finite_difference/index}
 
   \subfile{method/index}
+
+  \begin{appendix}
+    \subfile{method/appendix}
+  \end{appendix}
 
   \newpage
   \bibliographystyle{abbrvnat}

@@ -3,9 +3,9 @@
 \begin{document}
   \chapter{Finite Difference Equations}\label{chapter:fdes}
 
-  Unfortunately the equations that are derived in Chapter~\ref{chapter:derivation} do not have well formed analytics solutions. In fact, generally, most partial differential equations do not have explicit analytic solutions. Consequently we must find accurate numerical approximations and methods for solving these problems.
+  Unfortunately the equations that are derived in \autoref{chapter:derivation} do not have well formed analytics solutions. In fact, generally, most partial differential equations do not have explicit analytic solutions. Consequently we must find accurate numerical approximations and methods for solving these problems.
 
-  In this chapter we introduce the required mathematics for understanding the numerical methods used in Chapter~\ref{chapter:method}. We introduce the idea of a finite difference equation, and the finite difference method for numerically solving partial differential equations. As well as the required knowledge to understand the stability of the methods described.
+  In this chapter we introduce the required mathematics for understanding the numerical methods used in \autoref{chapter:method}. We introduce the idea of a finite difference equation, and the finite difference method for numerically solving partial differential equations. As well as the required knowledge to understand the stability of the methods described.
 
   \section{Relation to Differential Calculus}\label{sec:fdes:intro}
   As Gorge Boole writes in \cite{boole1880}, ``Differential Calculus is occupied about the limits to which such ratios approach as the increments are indefinitely diminished.'' However, ``The Calculus of Finite Differences may be strictly defined as the science which is occupied about the ratios of the simultaneous increments of quantities mutually dependent.'' In simple terms the calculus of finite differences is only concerned about ratios of infinitesimals, in line with the ideas of Newtonian calculus. \par
@@ -16,7 +16,7 @@
     \frac{\mathrm{d}y}{\mathrm{d}x} = y.
   \end{equation}
 
-  In differential calculus we can represent the left hand of Equation~\ref{fda:eq:example1} by \\
+  In differential calculus we can represent the left hand of \autoref{fda:eq:example1} by \\
 
   \begin{equation}
     \frac{\mathrm{d}y}{\mathrm{d}x} = \frac{\mathrm{d}}{\mathrm{d}x}(y) = \lim_{h \to 0} \frac{y(x+h) - y(x)}{h},
@@ -51,7 +51,7 @@
   \subsection{Difference Notation}\label{sec:fdes:notation}
   \emph{In this section we assume that our fractional $\Delta x > 0$ is fixed throughout.}
 
-  In Section~\ref{sec:fdes:intro} we introduced the definition of a difference as \\
+  In \autoref{sec:fdes:intro} we introduced the definition of a difference as \\
 
   \begin{equation}
     \Delta u = u(x + \Delta x) - u(x).
@@ -82,7 +82,7 @@
   \end{definition}
 
   \subsection{Relation to Derivatives}\label{sec:fdes:relation}
-  Now that we have the definitions of differences we can study their relation to derivatives in more detail. Consider the first forward difference of some function $u: \mathbb{R} \to \mathbb{R}$. Then from Section~\ref{sec:fdes:intro} we know that \\
+  Now that we have the definitions of differences we can study their relation to derivatives in more detail. Consider the first forward difference of some function $u: \mathbb{R} \to \mathbb{R}$. Then from \autoref{sec:fdes:intro} we know that \\
 
   \begin{equation}
     u'(x)
@@ -116,7 +116,7 @@
         \frac{u(x + \Delta x) - u(x)}{\Delta} = \frac{\mathrm{d}u}{\mathrm{d}x} + \frac{E_1}{\Delta x}.
       \end{equation}
 
-      We label $E_1 / \Delta x$ as $T_1$ which is defined as \emph{truncation error} (See Section~\ref{sec:fdes:truncation}). It is clear from this that the left hand side is an approximation to $\dfrac{\mathrm{d}u}{\mathrm{d}x}$.
+      We label $E_1 / \Delta x$ as $T_1$ which is defined as \emph{truncation error} (See \autoref{sec:fdes:truncation}). It is clear from this that the left hand side is an approximation to $\dfrac{\mathrm{d}u}{\mathrm{d}x}$.
     \end{proof}
   \end{theorem}
 
@@ -127,7 +127,7 @@
     L(u) = \frac{\partial u}{\partial t} - \mathcal{L}u
   \end{equation}
 
-  for some linear differential operator $\mathcal{L}$ which is a function $\mathcal{L}(x, u, x_x, ..., u_{x^n})$ for some $n \in \mathbb{N}$, that is that $L :  \mathcal{C}^m \to \mathcal{C}^n$. We consider a grid as shown in Figure~\ref{fde:fig:mesh}.
+  for some linear differential operator $\mathcal{L}$ which is a function $\mathcal{L}(x, u, x_x, ..., u_{x^n})$ for some $n \in \mathbb{N}$, that is that $L :  \mathcal{C}^m \to \mathcal{C}^n$. We consider a grid as shown in \autoref{fde:fig:mesh}.
 
   \begin{figure}[b]
     \centering
