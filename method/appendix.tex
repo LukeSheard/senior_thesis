@@ -16,9 +16,9 @@
 
   Which shows that
   \begin{eqnarray}
-    \e{-x}\varphi
+    \e{-x}\varphi_t
     &=& -\e{-x} \frac{\partial}{\partial x} \left(\hat{g} \varphi \right) - \e{-x} \hat{\mu}(x) \varphi + \frac{\e{-x}}{2} \frac{\partial}{\partial x} \left( \e{-x} \frac{\partial}{\partial x} \left( \hat{D} \varphi \right) \right) \nonumber \\
-    \varphi
+    \varphi_t
     &=& - \frac{\partial}{\partial x} \left(\hat{g} \varphi \right) - \hat{\mu}(x) \varphi + \frac{1}{2} \frac{\partial}{\partial x} \left( \e{-x} \frac{\partial}{\partial x} \left( \hat{D} \varphi \right) \right) \nonumber \\
     &=& - \left(\hat{g} \varphi \right)_x - \hat{\mu}(x) \varphi + \frac{\e{-x}}{2} \left( \left( \hat{D} \varphi \right)_{xx} - \left( \hat{D} \varphi \right)_x \right). \label{app:eq:cov}
   \end{eqnarray}
@@ -45,20 +45,46 @@
 
   The death term provides an easier change of variables with
   \begin{equation}
-    \hat{\mu}(x) = \mu(\e{x}) = \int \e{\alpha x} \bar{S}(x' - x) \varphi(x') \: \mathrm{d}x' - \delta.
+    \hat{\mu}(x) = \mu(\e{x}) = \int \e{\alpha x'} \bar{S}(x' - x) \varphi(x') \: \mathrm{d}x' - \delta.
   \end{equation}
 
   If we now assume that $\e{\gamma x} \rho(x) = \varphi(x)$, so that if the steady state of $\varphi(x) \propto \e{\gamma x}$ then the steady state of $\rho(x) \propto 1$, then we have that \autoref{app:eq:cov} implies
 
   \begin{eqnarray}
-    \e{\gamma x} \rho
+    \e{\gamma x} \rho_t
     &=& - (\hat{g} \e{\gamma x} \rho)_x - \hat{\mu} \e{\gamma x} \rho + \frac{\e{-x}}{2} \left( (\hat{D}\e{\gamma x} \rho)_{xx} - (\hat{D} \e{\gamma x} \rho)_x \right) \nonumber \\
-    &=& - (\bar{g} \rho)_x - \bar{\mu} \rho + \frac{\e{-x}}{2} \left( (\bar{D} \rho)_{xx} - (\bar{D} \rho)_x \right)
+    &=& - (\bar{g} \rho)_x - \bar{\mu} \e{\gamma x} \rho + \frac{\e{-x}}{2} \left( (\bar{D} \rho)_{xx} - (\bar{D} \rho)_x \right)
   \end{eqnarray}
 
   with the coefficient equations
   \begin{eqnarray}
-    \bar{g}(x) &=& \int K \e{x'} \e{(\gamma + \alpha - 1) x} \bar{S}( x - x' ) \varphi(x') \: \mathrm{d} x' \\
+    \bar{g}(x) &=& \int K \e{(\gamma + 1) x' + (\gamma + \alpha - 1) x} \bar{S}( x - x' ) \rho(x') \: \mathrm{d} x' \\
+    \bar{D}(x) &=& \int K^2 \e{(\gamma + 2) x' + (\gamma + \alpha - 1) x} \bar{S}( x - x' ) \rho(x') \: \mathrm{d} x' \\
+    \bar{\mu}(x) &=& \int \e{(\alpha + \gamma) x'} \bar{S}(x' - x)\rho(x') \: \mathrm{d}x' - \delta
   \end{eqnarray}
+
+  If we then follow the example of \cite{datta2011} and set $\alpha + \gamma - 1 = 0$, then these are reduced to
+  \begin{eqnarray}
+    \bar{g}(x)
+    &=& \int K \e{(\gamma + 1) x'} \bar{S}( x - x' ) \rho(x') \: \mathrm{d} x' \nonumber \\
+    &=& \int K \e{(\gamma + 1)(x-y)} \bar{S}(y) \rho(x-y) \: \mathrm{d}y \\
+    \bar{D}(x)
+    &=& \int K^2 \e{(\gamma + 2) x'} \bar{S}( x - x' ) \rho(x') \: \mathrm{d} x' \nonumber \\
+    &=& \int K^2 \e{(\gamma + 2)(x-y)} \bar{S}(y) \rho(x-y) \: \mathrm{d}y \\
+    \bar{\mu}(x)
+    &=& \int \e{x'} \bar{S}(x' - x)\rho(x') \: \mathrm{d}x' - \delta \nonumber \\
+    &=& - \int \e{x+y} \bar{S}(y) \rho(x+y) \: \mathrm{d}y - \delta
+  \end{eqnarray}
+
+  \section{Steady State Condition}
+  At steady state we have that $\varphi(x) = \varphi_0 \e{\gamma x}$, so $\rho(x) = \upsilon_0 = \varphi_0$, thus we have that, after cancelling $\upsilon_0$
+  \begin{equation}
+    0 =  \e{-\gamma x}\bar{g}_x + \bar{\mu} - \frac{\e{-(\gamma + 1) x}}{2} \left( \bar{D}_{xx} - \bar{D}_x \right)
+  \end{equation}
+
+  which, after substituting in the coefficient functions and cancelling some overall factors gives a steady state condition for the equation.
+  \begin{equation}
+    \int \bar{S}(y) \e{x+y} \left( -1 + (\gamma +1)K\e{-(\gamma + 2)y} - (\gamma +2 )(\gamma +3) \frac{K^2}{2}\e{-(\gamma + 3)y} \right) \: \mathrm{d}y - \eta
+  \end{equation}
 
 \end{document}

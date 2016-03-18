@@ -159,4 +159,4 @@ pythontex-files-*/
 TSWLatexianTemp*
 
 # Chapters
-ch*/*.pdf
+*/*.pdf
