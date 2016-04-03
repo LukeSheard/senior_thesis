@@ -3,12 +3,12 @@
 \begin{document}
   \chapter{Finite Difference Equations}\label{chapter:fdes}
 
-  Unfortunately the equations that are derived in \autoref{chapter:derivation} do not have well formed analytics solutions. In fact, generally, most partial differential equations do not have explicit analytic solutions. Consequently we must find accurate numerical approximations and methods for solving these problems.
+  As we will see, the equations that are derived in \autoref{chapter:derivation} do not have well formed analytics solutions. In fact, generally, most partial differential equations do not have explicit analytic solutions. Consequently we must find accurate numerical approximations and methods for solving these problems.
 
   In this chapter we introduce the required mathematics for understanding the numerical methods used in \autoref{chapter:method}. We introduce the idea of a finite difference equation, and the finite difference method for numerically solving partial differential equations. As well as the required knowledge to understand the stability of the methods described.
 
   \section{Relation to Differential Calculus}\label{sec:fdes:intro}
-  As Gorge Boole writes in \cite{boole1880}, ``Differential Calculus is occupied about the limits to which such ratios approach as the increments are indefinitely diminished.'' However, ``The Calculus of Finite Differences may be strictly defined as the science which is occupied about the ratios of the simultaneous increments of quantities mutually dependent.'' In simple terms the calculus of finite differences is only concerned about ratios of infinitesimals, in line with the ideas of Newtonian calculus. \par
+  As Gorge Boole writes in \cite{boole1880}, \emph{``Differential Calculus is occupied about the limits to which such ratios approach as the increments are indefinitely diminished.'' However, ``The Calculus of Finite Differences may be strictly defined as the science which is occupied about the ratios of the simultaneous increments of quantities mutually dependent.''} In simple terms the calculus of finite differences is only concerned about ratios of infinitesimals, in line with the ideas of Newtonian calculus. \par
 
   To understand this, consider the simple \emph{ordinary} differential equation: \\
 
@@ -43,7 +43,7 @@
     &=& \frac{\mathrm{d} y}{\mathrm{d}x}.
   \end{eqnarray}
 
-  However $\dfrac{\mathrm{d} y}{\mathrm{d}x}$ is not a true fraction, $\mathrm{d}y$ and $\mathrm{d}x$ do not have any intrinsic value where as $\Delta y$ and $\Delta x$ have exact value. As \cite{boole1880} notes in the opening remarks: ``In consequence of the fundamental difference above noted between the Differential Calculus and the Calculus of Finite Differences, the term Finite ceases to be necessary as a mark of distinction. The former is a calculus of limits, not of differences.''
+  However $\dfrac{\mathrm{d} y}{\mathrm{d}x}$ is not a true fraction, $\mathrm{d}y$ and $\mathrm{d}x$ do not have any intrinsic value where as $\Delta y$ and $\Delta x$ have exact value. As \cite{boole1880} notes in the opening remarks: \emph{``In consequence of the fundamental difference above noted between the Differential Calculus and the Calculus of Finite Differences, the term Finite ceases to be necessary as a mark of distinction. The former is a calculus of limits, not of differences.''}
 
   \section{Difference Quotients}\label{sec:fdes:quotients}
   In section we begin to construct the frameworks needed to numerically model and solve partial differential equations in the discrete space of finite difference equations. We begin by introducing a deeper model of differences using a directional differences, and then using this to construct approximations to partial derivatives of any order.
@@ -127,7 +127,21 @@
     L(u) = \frac{\partial u}{\partial t} - \mathcal{L}u
   \end{equation}
 
-  for some linear differential operator $\mathcal{L}$ which is a function $\mathcal{L}(x, u, x_x, ..., u_{x^n})$ for some $n \in \mathbb{N}$, that is that $L :  \mathcal{C}^m \to \mathcal{C}^n$. We consider a grid as shown in \autoref{fde:fig:mesh}.
+  for some linear differential operator $\mathcal{L}$ which is a function $\mathcal{L}(x, u, x_x, ..., u_{x^n})$ for some $n \in \mathbb{N}$, that is that $L :  \mathcal{C}^m \to \mathcal{C}$.
+
+  \begin{example}
+    The simplest example of this is the Advection Equation where $L$ takes the form
+    \begin{equation}
+      L(u) = \frac{\partial u}{\partial t} - \upsilon \frac{\partial u}{\partial x}.
+    \end{equation}
+    for some velocity constant $\upsilon$. However this advection equation can be extended further to add a source term to yield
+    \begin{equation}
+      L(u) = \frac{\partial u}{\partial t} - \left( \right)
+    \end{equation}
+  \end{example}
+
+
+  We consider a mesh-grid which is a partition in each variable $(t, x)$ with a constant $h$ in the $x$ and a constant increment $k$ in the $t$ direction (\autoref{fde:fig:mesh}). This allows us to construct a general difference equation $D: \mathcal{C}^m \to \mathbb{R}$
 
   \begin{figure}[b]
     \centering
@@ -135,12 +149,12 @@
       \draw[help lines] (1,1) grid (7,7);
 
       \draw[<->] (0.75, 2) -- (0.75, 3);
-      \node at (0, 4.5) {$\Delta t = k$};
+      \node at (-1.65, 2.5) {$\Delta t = k$};
       \node at (0, 2) {$n-1$};
       \node at (0, 3) {$n$};
 
       \draw[<->] (2, 0.75) -- (3, 0.75);
-      \node at (4.5, 0.45) {$\Delta x = h$};
+      \node at (2.5, -0.25) {$\Delta x = h$};
       \node at (2, 0.3) {$i-1$};
       \node at (3, 0.3) {$i$};
     \end{tikzpicture}
