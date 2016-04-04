@@ -1,4 +1,3 @@
-%!TEX root = ../main.tex
 \documentclass[../main.tex]{subfiles}
 \begin{document}
   \chapter{Finite Difference Equations}\label{chapter:fdes}
@@ -129,21 +128,33 @@
 
   for some linear differential operator $\mathcal{L}$ which is a function $\mathcal{L}(x, u, x_x, ..., u_{x^n})$ for some $n \in \mathbb{N}$, that is that $L :  \mathcal{C}^m \to \mathcal{C}$.
 
-  \begin{example}
+  \begin{example}\label{fde:ex:advection}
     The simplest example of this is the Advection Equation where $L$ takes the form
     \begin{equation}
       L(u) = \frac{\partial u}{\partial t} - \upsilon \frac{\partial u}{\partial x}.
     \end{equation}
     for some velocity constant $\upsilon$. However this advection equation can be extended further to add a source term to yield
     \begin{equation}
-      L(u) = \frac{\partial u}{\partial t} - \left( \right)
+      L(u) = \frac{\partial u}{\partial t} - \left(\upsilon \frac{\partial u}{\partial x} - \gamma u \right).
     \end{equation}
   \end{example}
 
 
-  We consider a mesh-grid which is a partition in each variable $(t, x)$ with a constant $h$ in the $x$ and a constant increment $k$ in the $t$ direction (\autoref{fde:fig:mesh}). This allows us to construct a general difference equation $D: \mathcal{C}^m \to \mathbb{R}$
+  We consider a mesh-grid which is a partition in each variable $(t, x)$ with a constant $h$ in the $x$ and a constant increment $k$ in the $t$ direction (\autoref{fde:fig:mesh}). This allows us to construct a general difference equation $D: \mathcal{C}^m \to \mathbb{R}$ which can approximate each point in the mesh grid.
 
-  \begin{figure}[b]
+  \begin{example}
+    Consider \autoref{fde:ex:advection} and consider approximating the derivatives at any point $(t, x)$ by $u(t, x)$, then we can write a difference equation as
+    \begin{equation}
+      D(u) = u - (\upsilon u - \gamma u)
+    \end{equation}
+    or, at any point in the grid $(t, x) = (n \cdot k, i \cdot h) \leftrightarrow (n, i)$ we can represent the value of $u(t, x)$ as $u_i^n$ and so a general finite difference takes the form of these indexed values. In our example this would be illustrated as
+    \begin{equation}
+      D(u) = u^n_i - (\upsilon u^n_i - \gamma u_i^n) = (1 - \upsilon + \gamma) u_i^n
+    \end{equation}
+
+  \end{example}
+
+  \begin{figure}[ht]
     \centering
     \begin{tikzpicture}[scale=0.75]
       \draw[help lines] (1,1) grid (7,7);
