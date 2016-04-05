@@ -1,0 +1,149 @@
+%!TEX root = ../main.tex
+\documentclass[../main]{subfiles}
+
+\begin{document}
+
+  \chapter{Size Spectrum Theory}\label{chapter:sizetheory}
+
+  In this chapter we consider the models in \cite{mckendrick1926} and \cite{foerster1959} who describe a system indexed by age. We then consider of the advances in \cite{silvert1978} who describe new equations indexed by weight and the derive the standard McKendrick-von Foerster Equation for weight indexed systems.
+
+  This work serves as the basis for \cite{datta2010}, who constructs a stochastic model for the dynamics of population, which they call the deterministic jump-growth equation. We consider the relevance of this equation in relation to the McKendrick-von Foerster Equation drawing further on the work of \cite{datta2010}.
+
+  \section{Age Indexed Models}
+  \cite{mckendrick1926} first posed the idea of modeling biological processed for medicinal science by a single characteristic. In a process of individuals meet they transfer information within the system, and if one considers these as individuals as particles in a system moving according to a dimension indexed by this single characteristic then their movement becomes a study in kinetics.
+
+  \cite{foerster1959} extended the principle equations derived in \cite{mckendrick1926} with extensions. \cite{trucco1965} gives a full rigorous discussion of the advancements made in \cite{foerster1959}. It's discussion involve considering the steady state solutions of what he calls ``The Von Foerster Equation''.
+
+  \subsection{The Von Foerster Equation}
+
+  The Von Foerster Equation was a major extension to the work of \cite{mckendrick1926}. It defines the standard in age indexed population models and reads
+
+  \begin{equation}\label{theory:eq:vf}
+    \frac{\partial n}{\partial t} + \frac{\partial n}{\partial a} = - m(a)n.
+  \end{equation}
+
+  for a mortality function dependent on age $m(a)$. Following the work of \cite{trucco1965}, who gives a good derivation of the equation, we now describe Von Foerster's reasoning to determine \autoref{theory:eq:vf}.
+
+  Suppose that $n(t, a)$ represents the density of individuals at time $t$ in the age category $(a, a + \Delta a)$. Then we have that
+
+  \begin{eqnarray}
+    \frac{\partial}{\partial t} \left( n(a, t) \Delta a \right)
+    &=& + \mbox{ rate of entry of } a \nonumber \\
+    &=& - \mbox{ rate of departure at } (a + \Delta a) \nonumber \\
+    &=& - \mbox{ deaths in } (a, a + \Delta a).
+  \end{eqnarray}
+
+  We can express which in mathematical terms for some \emph{flux}, $J(t, a)$, which describes that rate of movement of individuals in $(a, a + \Delta a)$ as
+
+  \begin{equation}\label{theory:eq:flux}
+    \frac{\partial n}{\partial t} = \frac{J(t, a) - J(t, a + \Delta a)}{\Delta a} - m(a) n(a, t).
+  \end{equation}
+
+  for some per capita mortality rate $m$. When dealing with the flux $J$ we consider that this represents the movement of individuals in age. As individuals become older the flux can be assumed the be proportional to the density of individuals with some velocity $v(t, a)$. If the aging corresponds to the parsing of time then we have that
+  $$ v = \frac{\partial a}{\partial t} = 1$$
+
+  and so $J(t, a) = n(t, a)$. Substituting this in it is clear that, in the limit as as $\Delta a \to 0$, \autoref{theory:eq:flux} becomes the \autoref{theory:eq:vf}.
+
+  \section{The Transport Equation}\label{theory:sec:transport}
+  After we consider \autoref{theory:eq:vf} we consider a more general form of equation: transport, or convection-diffusion, Equations take the general form
+
+  \begin{equation}\label{theory:eq:transport}
+    \frac{\partial u}{\partial t} = \nabla \cdot (D \nabla u) - \nabla \cdot (\vec{v} u) + R
+  \end{equation}
+
+  and describe particles undergoing diffusion and convection. In one dimension \autoref{theory:eq:transport} reduces to
+
+  \begin{equation}\label{theory:eq:transport1d}
+    \frac{\partial u}{\partial t} = - \upsilon u + R + (D u_x)_x.
+  \end{equation}
+
+  Comparing the coefficient definitions from \cite{stocker2011} to the ideas from the derivation of \autoref{theory:eq:vf} we take $u$ as the quantity of interest, population (density) and then we consider the coefficients $D$ and $\upsilon$ and parameter $R$.
+
+  The first term $-\upsilon u$ describes the convection (movement due to mass) in the system. $\upsilon$ describes the velocity of that the population is moving at, this is analgous to the growth of the individuals in the population the rate at which they grow and move through the weight range.
+
+  The second term $R$ describes the creation or destruction of the quantity. Thus in \autoref{theory:eq:vf} this becomes the death (naturally of predatorily) of the population.
+
+  Lastly we have the diffusion term $(D u_x)_x$. Imagine that c is the concentration of a chemical. When concentration is low somewhere compared to the surrounding areas (e.g. a local minimum of concentration), the substance will diffuse in from the surroundings, so the concentration will increase. Conversely, if concentration is high compared to the surroundings (e.g. a local maximum of concentration), then the substance will diffuse out and the concentration will decrease. This is analogous to phenomenon that are exhibited in the Jump-Growth Equation which we talk about in the next section.
+
+  \section{Weight Indexed Models}
+  \subsection{McKendrick-von Foerster Equation}\label{theory:sec:mvf}
+  \cite{silvert1978} introduced a more general construction of the McKendrick-von Foerster Equation, notwithstanding a change from age indexed population to sized based population, in a model which allowed growth and mortality to be functions of body mass. Their changes are widely used in mathematical biology and a full derivation can be found in \cite{silvert1978}, however a simple argument is that the \emph{flux} described in \autoref{theory:eq:flux} is changed for a flux that depends on the growth of individuals
+
+  \begin{equation}
+    J(t, w) = g(t, w) n(t, w)
+  \end{equation}
+
+  and $m(a)$ becomes a mortality function in weight and age $\mu(w)$. Thus the McKendrick-von Foerster Equation reads
+
+  \begin{equation}\label{theory:eq:mvf}
+    \frac{\partial n}{\partial t} + \frac{\partial}{\partial w} \left(g \cdot n \right) = - \mu \cdot n.
+  \end{equation}
+
+  Considering this equation in the context of \autoref{theory:sec:transport} we can see that the \autoref{theory:eq:mvf} is a transport equation with no diffusion term. While a transport equation is defined on the region of $\mathbb{R^+} \times \mathbb{R}$, simply requiring an initial condition, the Von Foerster Equation is only defined on $\mathbb{R^+} \times \mathbb{R^+}$, thus requiring a left boundary condition along the line $(t, 0)$. Generally this boundary condition is defined as the births across the population which could simply be defined with
+
+  \begin{equation}\label{theory:eq:simpleboundary}
+    u(t, 0) = 0
+  \end{equation}
+
+  however this would be an uninteresting problem since the system would only include growth and death, but no birth. Thus instead of \autoref{theory:eq:simpleboundary} we introduce a birth rate $b(a)$ and integrate over the population to give a boundary condition
+
+  \begin{equation}\label{theory:eq:boundary}
+    u(t, 0) = \int_0^{\infty} b(w) u(t, w) \: \mathrm{d}t.
+  \end{equation}
+
+  Of course numerically we would introduce a right hand side boundary since we cannot handle the domain $[0, \infty)$, but we will deal with this in due course.
+
+  \subsection{Jump Growth Equation}\label{theory:sec:jumpgrowth}
+  While the mathematical framework presented in \cite{silvert1978}, \cite{datta2010} presents a different method of describing weight indexed population under a the assumption that predation is a Markov process. The predation event extends the ideas of \cite{silvert1980} where predation is modeled the coupled death at one size to the growth of another. This is illustrated in \autoref{fig:mvf:predation} where we see there are three types of predation to yield news individuals weight $w_c$.
+
+  \begin{figure}[ht]
+    \centering
+    \caption{Figure 1 from \cite{datta2010}. The death of an individual with weight $w_b$ is attributed to the growth of another individual weight $w_a$, who consequently dies to yield a new individual with weight $w_c = w_a + K w_b$ for some predation efficiency $K$ that could be a function of weight. \label{theory:fig:predation}}
+    \includegraphics[width=0.75\textwidth]{_assets/stochastic_predation.png}
+  \end{figure}
+
+  Resolving the macroscopic behavior of these predation events yields the deterministic equation
+
+  \begin{equation}\label{theory:eq:discretejump}
+    \frac{\partial \varphi_i}{\partial t} = \sum_j \left(- k_{ij} \varphi_i \varphi_j - k_{ji} \varphi_j \varphi_i + k_{mj} \varphi_m \varphi_j \right),
+  \end{equation}
+
+  where $m$ is the index satisfying the weight bracket $w_m \leq w_i - K w_j < w_{m+1}$ and $k_{xy}$ is the indexed rate of predation events, predator before prey. \cite{datta2010} explains that these three terms correspond to the three types of predation event seen in \autoref{theory:fig:predation}: losses from bracket $i$ (negative terms) occur because individuals in this bracket eat prey and become heavier, and because these individuals are themselves eaten. Gains into weight bracket i (the positive term) occur through smaller predators growing into this bracket by eating prey.
+
+  We can create an analytic equation for use in calculations by taking the continuum limit of \autoref{theory:eq:discretejump} and using a continuous feeding rate function $k(w, w')$ to replace the rate constants $k_{xy}$. Thus \autoref{theory:eq:discretejump} becomes
+  \begin{align}\label{theory:eq:jumpgrowth}
+    \frac{\partial \phi(w)}{\partial t}
+    = \int ( &- k(w, w') \phi(w)\phi(w') \nonumber \\
+    & - k(w, w')\phi(w')\phi(w) \nonumber \\
+    & + k(w - Kw', w')\phi(w - Kw')\phi(w')) \: \mathrm{d}w'.
+  \end{align}
+
+  \cite{datta2010} labels this the ``Deterministic Jump-Growth Equation'' and again the three terms represent the methods of transferring weight within in the system through predation corresponding to the methods in \autoref{theory:fig:predation}: Predation on prey to become larger, being predated upon and being fed with the correct weight to increase.
+
+  \subsection{McKendrick-von Foerster Equation with Diffusion}\label{theory:sec:mvfdiffusion}
+  The McKendrick-von Foerster Equation can be shown to be an approximation to the Jump-Growth Equation, but only to first order. A second order approximation can be yielded by including a diffusion term. Consider the third term in the Jump-Growth Equation as a Taylor Series:
+  \begin{align}
+    k(w - Kw', w')\phi(w - K w')
+    = & k(w, w') \varphi(w) \nonumber \\
+      & + (-K w') \frac{\partial}{\partial w} \left(k(w, w')\varphi(w')\varphi(w)\right) \nonumber \\
+      & + \frac{1}{2}(-K w')^2 \frac{\partial^2}{\partial w^2} \left(k(w, w')\varphi(w)\right) + ...
+  \end{align}
+
+  Once this is substituted back in to \autoref{theory:eq:jumpgrowth} gives
+  \begin{align}\label{theory:eq:jumpgrowth}
+    \frac{\partial \phi(w)}{\partial t}
+    & = \int - k(w, w') \phi(w)\phi(w')  \: \mathrm{d}w' \nonumber \\
+    & - \frac{\partial}{\partial w} \int K w' k(w, w')\varphi(w)\varphi(w') \: \mathrm{d}w' \nonumber \\
+    & + \frac{1}{2}\frac{\partial^2}{\partial w^2} \int (K w')^2 k(w, w')\varphi(w)\varphi(w') \: \mathrm{d}w' + ...
+  \end{align}
+
+  Which can obviously be seen as an approximation to the McKendrick-von Foerster Equation, with a diffusion term added. Thus for an appropriate choice of coefficients we can restrict our attention to equations in a Transport Equation form
+
+  \begin{equation}
+    \frac{\partial u}{\partial t} = - (g \cdot u)_w - \mu \cdot u + \frac{1}{2}(D u)_{xx}.
+  \end{equation}
+
+  \section{Summary}
+  In this chapter we have introduced the mathematical framework that will be used to model population and shown that the macroscopic stochastic Jump-Growth equation is comparable to the Transport Equation forms of the McKendrick-von Foerster Equation. In \autoref{chapter:modelequations} we introduce a numerical construction of the coefficients giving arise to the true models that will be solved in \autoref{chapter:method}. 
+
+\end{document}

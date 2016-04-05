@@ -1,5 +1,38 @@
-%!TEX root = ../main.tex
 \documentclass[../main.tex]{subfiles}
+
+% Abstract
+\makeatletter
+\renewenvironment{abstract}{%
+  \if@twocolumn
+    \section*{\abstractname}%
+  \else
+    \small
+    \begin{center}%
+      {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
+    \end{center}%
+    \quotation
+  \fi}
+  {\if@twocolumn\else\endquotation\fi}
+\makeatother
+
 \begin{document}
+  \begin{titlepage}
+    \maketitle
+  \end{titlepage}
+
+  \pagenumbering{roman}
+  \begin{abstract}
+    \addcontentsline{toc}{chapter}{Abstract}
+    This is my Abstract
+  \end{abstract}
+
+  \newpage
+  \listoffigures
+  \tableofcontents
+
+  % Set Options for Main Document
+  \setlength{\parskip}{0.5em}
+  \pagenumbering{arabic}
+
   \chapter{Introduction}\label{chapter:introduction}
 \end{document}

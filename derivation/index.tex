@@ -1,32 +1,6 @@
-\documentclass[../main.tex]{subfiles}
+\documentclass[../main]{subfiles}
 \begin{document}
 
-  \chapter{Fundamental Equations}\label{chapter:equations}
-
-  In this chapter we begin to construct the equations that will be analyzed under finite difference equations numerically. We consider the McKendrick Von Foerster Equation with diffusion as a initial equation for abstract feeding kernels and growth and construct a concrete equation to study through investigation of variables and parameters.
-
-  \section{Population Movement}
-  In a population individuals will move between weights over time and this can be due to growth death, or `diffusion'.  
-
-  The work of \cite{datta2010} and the Jump-Growth Equation relies on the principle of a feeding kernel, the preferred weight a predator would like to prey on. Using the McKendrick Von Foerster Equation with diffusion (\autoref{eq:mvf:diffusion}) as an approximation to this equation we must define some arbitrary
-
-  \subsection{Prey Size Selection}
-  Under the assumption that larger fish eat smaller fish (\autoref{fig:mvf:predation}) we assume that feeding take places locally on a preferred weight smaller, $\beta = 100$ than the predators own. The preference is then normally distributed around this weight and thus we have some size-selection function
-  \begin{equation}\label{eq:mvf:feedgaussian}
-    S\left( \mathrm{e}^z \right) = \frac{1}{\sigma \sqrt{2\pi}} \exp{\left( - \frac{(z - \beta)^2}{2 \sigma^2}\right)}
-  \end{equation}
-
-  \subsection{Feeding Kernel}
-  The feeding kernel represents the
-
-  As described in \cite{benoit2004} we assume that the feeding rate takes the form
-  \begin{equation}\label{eq:mvf:feeding}
-    k(w, w') = w^{\alpha} S\left( \frac{w}{w'} \right)
-  \end{equation}
-
-  for some $\alpha$, and further we take $S$ to be a local Gaussian of the the form
-
-
-  for some $\beta, \sigma$ to be determined experimentally.
+  \chapter{Model Equations}\label{chapter:modelequations}
 
 \end{document}
