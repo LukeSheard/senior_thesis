@@ -94,7 +94,7 @@
   Of course numerically we would introduce a right hand side boundary since we cannot handle the domain $[0, \infty)$, but we will deal with this in due course.
 
   \subsection{Jump Growth Equation}\label{theory:sec:jumpgrowth}
-  While the mathematical framework presented in \cite{silvert1978}, \cite{datta2010} presents a different method of describing weight indexed population under a the assumption that predation is a Markov process. The predation event extends the ideas of \cite{silvert1980} where predation is modeled the coupled death at one size to the growth of another. This is illustrated in \autoref{fig:mvf:predation} where we see there are three types of predation to yield news individuals weight $w_c$.
+  While the mathematical framework presented in \cite{silvert1978}, \cite{datta2010} presents a different method of describing weight indexed population under a the assumption that predation is a Markov process. The predation event extends the ideas of \cite{silvert1980} where predation is modeled the coupled death at one size to the growth of another. This is illustrated in \autoref{theory:fig:predation} where we see there are three types of predation to yield news individuals weight $w_c$.
 
   \begin{figure}[ht]
     \centering
@@ -113,7 +113,7 @@
   We can create an analytic equation for use in calculations by taking the continuum limit of \autoref{theory:eq:discretejump} and using a continuous feeding rate function $k(w, w')$ to replace the rate constants $k_{xy}$. Thus \autoref{theory:eq:discretejump} becomes
   \begin{align}\label{theory:eq:jumpgrowth}
     \frac{\partial \phi(w)}{\partial t}
-    = \int ( &- k(w, w') \phi(w)\phi(w') \nonumber \\
+    = \int ( &- k(w', w) \phi(w)\phi(w') \nonumber \\
     & - k(w, w')\phi(w')\phi(w) \nonumber \\
     & + k(w - Kw', w')\phi(w - Kw')\phi(w')) \: \mathrm{d}w'.
   \end{align}
@@ -130,20 +130,20 @@
   \end{align}
 
   Once this is substituted back in to \autoref{theory:eq:jumpgrowth} gives
-  \begin{align}\label{theory:eq:jumpgrowth}
+  \begin{align}\label{theory:eq:jumpdiffusion}
     \frac{\partial \phi(w)}{\partial t}
-    & = \int - k(w, w') \phi(w)\phi(w')  \: \mathrm{d}w' \nonumber \\
+    & = \int - k(w', w) \phi(w)\phi(w')  \: \mathrm{d}w' \nonumber \\
     & - \frac{\partial}{\partial w} \int K w' k(w, w')\varphi(w)\varphi(w') \: \mathrm{d}w' \nonumber \\
     & + \frac{1}{2}\frac{\partial^2}{\partial w^2} \int (K w')^2 k(w, w')\varphi(w)\varphi(w') \: \mathrm{d}w' + ...
   \end{align}
 
   Which can obviously be seen as an approximation to the McKendrick-von Foerster Equation, with a diffusion term added. Thus for an appropriate choice of coefficients we can restrict our attention to equations in a Transport Equation form
 
-  \begin{equation}
+  \begin{equation}\label{theory:eq:jumptransport}
     \frac{\partial u}{\partial t} = - (g \cdot u)_w - \mu \cdot u + \frac{1}{2}(D u)_{xx}.
   \end{equation}
 
   \section{Summary}
-  In this chapter we have introduced the mathematical framework that will be used to model population and shown that the macroscopic stochastic Jump-Growth equation is comparable to the Transport Equation forms of the McKendrick-von Foerster Equation. In \autoref{chapter:modelequations} we introduce a numerical construction of the coefficients giving arise to the true models that will be solved in \autoref{chapter:method}. 
+  In this chapter we have introduced the mathematical framework that will be used to model population and shown that the macroscopic stochastic Jump-Growth equation is comparable to the Transport Equation forms of the McKendrick-von Foerster Equation. In \autoref{chapter:modelequations} we introduce a numerical construction of the coefficients giving arise to the true models that will be solved in \autoref{chapter:method}.
 
 \end{document}

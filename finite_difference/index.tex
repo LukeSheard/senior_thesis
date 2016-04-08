@@ -1,6 +1,195 @@
-\documentclass[../main]{subfiles}
+%!TEX root = ../main.tex
+\documentclass[../main.tex]{subfiles}
 \begin{document}
 
   \chapter{Mathematics of Discretization}\label{chapter:differences}
+  The major benefit of studying equations which hold the form of a Transport equation is the large body of research of their solutions and behavior. We begin this chapter by considering the most basic transport equation, the Advection Equation which will allow the introduction of finite difference techniques.
+
+  We then follow this through with a discussion of the approach used by \cite{hartvig2011} on the food web framework that they have developed using semi-implicit methods.
+
+  \section{Advection Equation}
+  The Advection Equation is a simple hyperbolic partial differential equation, in one dimension we take
+
+  \begin{equation} \label{diff:eq:advection}
+    \frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x} = d u,
+  \end{equation}
+
+  for some transfer velocity $v$ and destruction rate $d$ on the domain $\mathbb{R}^+ \times R$ for some $R \subseteq \mathbb{R}$. The linear advection has been studied extensively and thus we can gain some insight in to potential issues that might occur in our more complicated equations such as \autoref{model:eq:logscale}.
+
+  \subsection{Analytic Solution}
+  As with ordinary differential equations, partial differential equations can be solved with the ``method of characteristics'' (or method of lines). Say we consider \autoref{diff:eq:advection} on the domain $\mathbb{R}^+ \times \mathbb{R}^+$, as to line up with the McKendrick-von Foerster Equation. Then we define some boundary value and initial value problem (BVP and IVP):
+
+  \begin{eqnarray} \label{diff:eq:advectionbvp}
+    u_t + v \, u_x  &=& + d \, u \nonumber \\
+    u(0, x) &=& I(x) \nonumber \\
+    u(t, 0) &=& B(x)
+  \end{eqnarray}
+
+  Using the method of characteristics we consider a point in the domain $\{(t, x) : t, x > 0 \}$ and solve the equation along some characteristic line $(t(s), x(s)) = y(s)$ stemming from an $y_0 \in \Gamma = \{ (0, x) : x \in \mathbb{R}^+ \} \cup \{ (t, 0) : t \in \mathbb{R}^+ \}$. The full details of the method are left to the reader however we find that
+
+  \begin{equation} \label{diff:eq:advectionsol}
+    u(t, x) = \left\lbrace \begin{array}{ll}
+      I(x - v t) \e{-d \, t} & x - vt > 0 \\
+      B(x - v t) \e{-d \, t} & x - vt \leq 0 \\
+  \end{array} \right.
+  \end{equation}
+
+  along any characteristic $x = vt$. We note that the McKendrick-von Foerster will take a form similar to this if the growth and death terms are constants, but the problem will become more complicated if the coefficients are functions of $t, x$ or non-linear. However this problem does allow us to introduce the idea of \emph{domain of dependence}.
+
+  \begin{definition}[Analytic Domain of dependence]
+    Given any BVP and/or IVP on $U \subseteq \mathbb{R}^n$ the with solution $\varphi$, the domain of dependence for for any $x \in U$ is the set $V \subseteq U$ that $\varphi(x)$ depends on to be calculated.
+  \end{definition}
+
+  \autoref{diff:fig:domainofdep} shows the characteristic lines for, the blue lines represent characteristics which depend on the time axis boundary condition while the red arrows depend on the spatial axis initial condition. Looking at the analytic solution to \autoref{diff:eq:advectionbvp} we see that the initial condition is carried along the characteristic.
+
+  \begin{figure}[hbt]
+    \centering
+    \begin{tikzpicture}[scale=0.75]
+      \draw[help lines] (0,0) grid (7,7);
+
+      \draw[thick, ->] (0, 0) -- (0, 7.2) node[anchor=south east] {$t$};
+      \draw[thick, ->] (0, 0) -- (7.2, 0) node[anchor=north west] {$x$};
+
+      \draw[blue, <-] (0, 1.5) -- (5.5, 7);
+      \draw[blue, <-] (0, 3) -- (4, 7);
+      \draw[blue, <-] (0, 4.5) -- (2.5, 7);
+      \draw[blue, <-] (0, 6) -- (1, 7);
+
+      \draw[<-] (0, 0) -- (7, 7);
+
+      \draw[red, <-] (1.5, 0) -- (7, 5.5);
+      \draw[red, <-] (3, 0) -- (7, 4);
+      \draw[red, <-] (4.5, 0) -- (7, 2.5);
+      \draw[red, <-] (6, 0) -- (7, 1);
+    \end{tikzpicture}
+
+    \caption{The characteristic lines for the solution of \autoref{diff:eq:advectionsol} with constant coefficients. There is no overlap between the lines which means that the solution can be smooth if the boundary conditions along $\Gamma$ are smooth. The domain of dependence for traverses the direction of each arrowhead line. \label{diff:fig:domainofdep}}
+  \end{figure}
+
+  While it is not obvious how this definition will be useful now, it will become extremely important in the analysis of stability of the numerical methods that we discuss in the next section.
+
+  \subsection{Numerical Solutions to the Advection Equation} \label{diff:sec:fdesintro}
+  Suppose now that we want to solve the advection numerically. Writing the equation using limits we have that
+
+  \begin{equation} \label{diff:eq:finiteadvection}
+    \lim_{\Delta t \to 0} \frac{u(t + \Delta t, x) - u(t, x)}{\Delta t} + v \lim_{\Delta x \to 0} \frac{u(t, x + \Delta x) - u(t, x)}{\Delta t} = d u(t, x).
+  \end{equation}
+
+  However what if we simply ignored the limits and used Newtonian infinitesimals $\Delta t, \Delta x$? This would give us the equation
+
+  \begin{equation} \label{diff:eq:advectionfde}
+    \frac{u(t + \Delta t, x) - u(t, x)}{\Delta t} + v \frac{u(t, x + \Delta x) - u(t, x)}{\Delta x} = d u(t, x)
+  \end{equation}
+
+  which can be rearranged to solve for $u(t + \Delta t, x)$. This would give a discrete way of calculating a next time step  of the solution to the equation ($u(t + \Delta t, R)$) if we knew the solution $u(t, R)$. This forms the fundamental idea for finite difference equations. These equations approximate a problem by considering a discrete mesh on the domain and then solving the equation using a consistent (see \autoref{diff:sec:consistency}) difference equations.
+
+  \section{Difference Equations}
+  In general, most partial differential equations do not have explicit analytic solutions. Consequently we must find accurate numerical approximations and methods for solving these problems. In this section we introduce the required mathematics for understanding the numerical methods used to solve problems in partial differential equation theory.
+
+  \cite{boole1880} writes \emph{``Differential Calculus is occupied about the limits to which such ratios approach as the increments are indefinitely diminished.'' However, ``The Calculus of Finite Differences may be strictly defined as the science which is occupied about the ratios of the simultaneous increments of quantities mutually dependent.''} In simple terms the calculus of finite differences is only concerned about ratios of infinitesimals, in line with the ideas of Newtonian calculus.
+
+  In \autoref{diff:eq:finiteadvection} we broke down the limits in the derivitives by simply ignoring the limit, in this section we reconstruct this equation using difference equations derived from \cite{boole1880} and \cite{hildebrand1987}.
+
+  \begin{definition}[First Forward Difference]
+    For a function $u: U \to \mathbb{R}$ the first forwards difference of $u$ is
+
+    \begin{equation}
+      \Delta u = u(x + \Delta x) - u(x).
+    \end{equation}
+  \end{definition}
+
+  \begin{definition}[First Backwards Difference]
+    For a function $u: U \to \mathbb{R}$ the first backwards difference of $u$ is
+
+    \begin{equation}
+      \Delta u = u(x) - u(x - \Delta x).
+    \end{equation}
+  \end{definition}
+
+  These two definitions form the basis for finite difference theory. Just as with the differential operator we have that it is linear and satisfies the Leibniz rule. The proof of this is left to the reader, but follows exactly the same method as for derivatives. It is easy to construct the $n^{th}$ forward difference ($\Delta ^n[f](x)$) by simply considering $\Delta [\Delta ^{n-1}[f]](x)$.
+
+  When we consider the partial derivative of $u: \mathbb{R} \to \mathbb{R}$ we simply have that
+
+  \begin{equation}
+    u'(x) = \lim_{\Delta x \to 0} \frac{\Delta[u](x)}{\Delta x}
+  \end{equation}
+
+  which can easily be extended to higher dimensions. Using Taylor's theorem, we know that
+
+  \begin{equation}
+    u(x + \Delta x) = u(x) + \Delta x u'(x) + O(x)
+  \end{equation}
+
+  and so we can take the difference equation
+
+  \begin{equation}
+    \frac{\Delta[u](x)}{\Delta x} = u(x) + O(x)
+  \end{equation}
+
+  as a first order approximation to a first derivative of $u$. By combining $n^{th}$ forward and backward differences we can construct higher order approximations to derivatives at higher orders and higher orders of accuracy.
+
+  \section{Finite Difference Equation Errors}
+  Since finite difference equations have become such a staple in numerical analysis there are many texts that supply the different coefficients required to approximate derivatives accurately. \cite{fornberg1988} provides a details derivation and set of tables for almost all derivatives required in general PDE problems up to high orders in both accuracy and order.
+
+  However as with all numerical problems issues arise when constructing approximations due to errors that occur with the generation of those approximations themselves. In this section we begin to outline the two main types of error that occur in approximations and introduce the idea of consistency and convergence.
+
+  \subsection{Notation}
+  Before we begin talking about the errors generated by finite difference equations we begin by introducing the notation that will be used going forward. Suppose that we are given a partial differential equation of the form
+
+  \begin{equation} \label{diff:eq:pdeprob}
+    L(u) = \frac{\partial u}{\partial t} - \mathcal{L}u
+  \end{equation}
+
+  for some linear differential operator $\mathcal{L}$ which is a function $\mathcal{L}(x, u, x_x, ..., u_{x^m})$ for some $m \in \mathbb{N}$, that is that $\mathcal{L}, L :  \mathcal{C}^m \to \mathcal{C}$. We consider $L$ as a function of continuous differentiable functions with root solution $\Psi$, that is $L(\Psi) = 0$.
+
+  Given a BVP and/or IVP with $L$ as the operator on some domain $D \subseteq \mathbb{R}^+ \times R$, for $R \subseteq \mathbb{R}$ then we discretize the the domain in to a mesh-grid using a partition on some finite subdomain of time, that is the mesh-grid $M$ represents the continuous domain $[0, T] \times R \subset D$. We index the time steps by $n$ using a $\Delta t = h$ and the spatial steps by $j$ using $\Delta x = k$. Using these indexes we can notate any value of some function on the mesh grid as
+
+  \begin{equation}
+    u(t, x) = u(n \Delta t, j \Delta x) = u(n \cdot h, j \cdot k) = u^n_j.
+  \end{equation}
+
+  \subsection{Consistency} \label{diff:sec:consistency}
+  When considering the appropriateness of a finite difference equation to model a particular problem there are three problems that arise, the most easy of these to understand is consistency. The broad definition of consistency is that a finite difference equation $D$ is consistent with a partial differential equation $L$ if the truncation error of $D$ from $L$ tends to $0$ for smaller mesh grid approximations.
+
+  To formally introduce consistency consider a PDE in them form of \autoref{diff:eq:pdeprob} with a true solution $\Phi$. Suppose that we take any finite difference equation $D: \mathcal{C}^m \to \mathcal{C}$ to approximate \autoref{diff:eq:pdeprob} and let $\phi$ be the solution to $D(u) = 0$.
+
+  \begin{definition}[Truncation Error]
+    For any problem described above the \emph{Truncation error} at any grid point $(n, j)$ is given as
+
+    \begin{equation}
+      T^n_j(\psi) = D(\psi^n_j) - L(\psi^n_j).
+    \end{equation}
+
+    If $\Phi$, the true solution of $L$ is known then the local truncation error $\tau^n_j$ is defined as $T^n_j(\Phi)$.
+  \end{definition}
+
+  If $\tau^n_j = O(h^p)$ then $D$ is said to be an order $p$ method, and in reality most finite difference equations are of order $p$ for some $p \in \mathbb{N}$. However this is not always the case and this is why we rely on consistency in a numerical calculation. $T^n_j$ gives an estimate of the error of replacing $L(v^n_j)$ by $F(v^n_j)$. This gives arise to a formal definition of consistency.
+
+  \begin{definition}[Consistency]
+    A finite difference equation $D$ is consistent to a partial differential equation $L$ as described above. Then if $v$ is any function, with a sufficient number of continuous derivatives such that $L(v^n_j)$ can be evaluated, $D$ is considered consistent with $L$ if
+
+    \begin{equation}
+      \lim_{k, h \to 0} T^n_j(v) = \lim_{k, h \to 0} F(v^n_j) - L(v^n_j) \to 0.
+    \end{equation}
+  \end{definition}
+
+  If $v = \Phi$ then $T^n_j(v) = \tau^n_j$ and the truncation error coincides with the local truncation error. So another definition of consistency is that the limiting value of the local truncation error is $0$. Suppose that we review \autoref{diff:eq:advectionfde} as an approximation to \autoref{diff:eq:advection}, having engineered the scheme using \cite{fornberg1988} we know that rearranging to gain an equation in the form $D(u) = 0$ the truncation error can be written as
+
+  \begin{equation}
+    T(v) = D(v) - L(v) = O(h) + v O(k) - d O(1) = O(h) + O(k)
+  \end{equation}
+
+  and thus as $h, k \to 0$ then $T(v) \to 0$ and we have a consistent difference equation of order $p = 1$.
+
+  \subsection{Stability}
+  Numerical stability theory stems more directly from analytical stability theory. Suppose that $L(u)$ is a PDE problem with two analytic solutions $\Psi_1$ and $\Psi_2$, one can analyze how likely a perturbation in the initial condition is to affect the system as it tends to one of the two analytic solutions. This same principle applies to numerical methods. The essential idea defining stability is that the numerical process should not cause any small perturbations introduced through rounding at any stage to grow and ultimately dominate the solution.
+
+  \section{Convergence Theory}
+
+  \subsection{Linear Theory}
+
+  \subsection{Non-Linear Theory}
+
+  \section{Conclusion}
 
 \end{document}
