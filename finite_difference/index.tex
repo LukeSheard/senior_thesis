@@ -194,7 +194,28 @@
     for all $n$, as $h, k \to 0$. Where $\boldsymbol\phi_n$ represents the vector $( \phi_j )$
   \end{definition}
 
+  \subsubsection{Fourier Method}
+  The Fourier method is one of the most common methods for analyzing the stability of a finite difference equation. We assume that the scheme admits a solution in the form
 
+  \begin{equation}
+    \upsilon^n_j = \lambda^n(\omega) \e{i j \omega \Delta x}.
+  \end{equation}
+
+  We then define
+
+  \begin{equation}
+    G(\omega) = \frac{\lambda^{n+1}(\omega)}{\lambda^n(\omega)}
+  \end{equation}
+
+  to give the amplification factor which governs the growth of the solution at each time step. The von Neumann stability condition is given by
+
+  \begin{equation}
+    \left\vert G(w) \right\vert \leq 1
+  \end{equation}
+
+  for all $0 \leq \omega \Delta x \leq \pi$. If a finite difference equation is stable then it is said to be conditionally stable if there is dependence on $G(\omega)$ for the stability condition to hold, otherwise the scheme is unconditionally stable. The Fourier method
+
+  \subsubsection{Eigenvalue Method}
 
   \section{Convergence Theory}
 
