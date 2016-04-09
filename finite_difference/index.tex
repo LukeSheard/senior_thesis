@@ -182,7 +182,19 @@
   and thus as $h, k \to 0$ then $T(v) \to 0$ and we have a consistent difference equation of order $p = 1$.
 
   \subsection{Stability}
-  Numerical stability theory stems more directly from analytical stability theory. Suppose that $L(u)$ is a PDE problem with two analytic solutions $\Psi_1$ and $\Psi_2$, one can analyze how likely a perturbation in the initial condition is to affect the system as it tends to one of the two analytic solutions. This same principle applies to numerical methods. The essential idea defining stability is that the numerical process should not cause any small perturbations introduced through rounding at any stage to grow and ultimately dominate the solution.
+  Numerical stability theory stems more directly from analytical stability theory. Suppose that $L(u)$ is a PDE problem with two analytic solutions $\Psi_1$ and $\Psi_2$, one can analyze how likely a perturbation in the initial condition is to affect the system as it tends to one of the two analytic solutions. This same principle applies to numerical methods. The essential idea defining stability is that the numerical process should not cause any small perturbations introduced through rounding at any stage to grow and ultimately dominate the solution, similar to the study of whether a small perturbation introduced into an analytic solution will cause the solution to tend to a dominant solution.
+
+  \begin{definition}[Numerical Stability]
+    A numerical method is stable if for every $T > 0$, there exists a constant $c(T) > 0$ such that
+
+    \begin{equation}
+      || \boldsymbol\phi_n ||_h < c(T)
+    \end{equation}
+
+    for all $n$, as $h, k \to 0$. Where $\boldsymbol\phi_n$ represents the vector $( \phi_j )$
+  \end{definition}
+
+
 
   \section{Convergence Theory}
 
