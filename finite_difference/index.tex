@@ -213,16 +213,48 @@
     \left\vert G(w) \right\vert \leq 1
   \end{equation}
 
-  for all $0 \leq \omega \Delta x \leq \pi$. If a finite difference equation is stable then it is said to be conditionally stable if there is dependence on $G(\omega)$ for the stability condition to hold, otherwise the scheme is unconditionally stable. The Fourier method
+  for all $0 \leq \omega \Delta x \leq \pi$. If a finite difference equation is stable then it is said to be conditionally stable if there is dependence on $G(\omega)$ for the stability condition to hold, otherwise the scheme is unconditionally stable. The Fourier method is the most widely used but can break down for non-linear methods since it can be more difficult to solve for $G(\omega)$.
 
   \subsubsection{Eigenvalue Method}
+  The Eigenvalue method
 
   \section{Convergence Theory}
+  In the previous section we defined the Truncation Error of a finite difference equation as the approximation error for a partial differential equation. In this section we deal with the numerical error.
 
-  \subsection{Linear Theory}
+  \begin{definition}[Numerical Error]
+    Given a BVP/IVP problem with true solution $\Phi(t, x)$ and a finite difference equation $D(u)$ with true solution $\phi$ the numerical error of $\phi$ is defined as
 
-  \subsection{Non-Linear Theory}
+    \begin{equation}
+      e^n_j(u) = \phi^n_j - \Phi^n_j.
+    \end{equation}
+  \end{definition}
 
-  \section{Conclusion}
+  Broadly speaking, we define convergence of a problem in a very simple way. Does our numerical solution accurately model the real solution. However the numerical error and true solution, and thus convergence, of a general problem is quite difficult to calculate since it relies on the knowledge of the solution. Thus we will need some more theory to deal with this issue. Before we move on to this theory we give the rigorous definition of convergence.
+
+  \begin{definition}[Convergence]
+    Given a BVP/IVP problem with true solution $\Phi(t, x)$ and a finite difference equation $D(u)$, with $\Delta t = h$ and $\Delta x = k$. The solution $D$, $\phi$, is said to converge to $\Phi$ if
+
+    \begin{equation}
+      \lim_{k \to 0} \left( \max_{n = 0, 1, ..., T / k} || \boldsymbol\phi_j - \boldsymbol\Phi_j ||_k \right) = 0.
+    \end{equation}
+
+    for every initial condition and for every $T > 0$
+  \end{definition}
+
+  The norm $|| \cdot ||_k$ is a grid dependent Euclidean Norm for the space, for example
+
+  $$
+    || \mathbf{u} ||_k = \left( k \sum |u_j|^2 \right)^{1/2}.
+  $$
+
+  The most major result in the theory of \emph{linear} finite difference equations is the  Lax–Richtmyer Equivalence theorem.
+
+  \begin{theorem}[Lax–Richtmyer]\label{diff:theorem:lax}
+    For a uniformly solvable linear finite difference scheme which is consistent with a well-posed linear evolution problem, the stability is a necessary and sufficient condition for its convergence.
+  \end{theorem}
+
+  In plain terms the theorem states that \textbf{Consistency + Stability implies convergence}. An extremely useful result which allows numerical mathematicians to ignore issues with finding the true solution of a PDE to calculate the convergence of finite difference equations.
+
+  However the issues arises that this theorem only holds for \emph{linear} problems. Thus in our research on \autoref{model:eq:logscale} with non-linear coefficients the theorem will break down. Luckily \autoref{diff:theorem:lax} has been extended by the work of \cite{rosinger2008} who classes a more general set of partial differential equations using nonlinear semigroup theory.
 
 \end{document}
