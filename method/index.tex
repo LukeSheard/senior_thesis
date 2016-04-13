@@ -1,4 +1,15 @@
+%!TEX root = ../main.tex
 \documentclass[../main]{subfiles}
 \begin{document}
   \chapter{Method}\label{chapter:method}
+
+  In this chapter we begin by considering finite difference equations for the McKendrick-von Foerster Equation with constant coefficients instead of the non-linear equations seen to be created using the Jump-Growth Equation.
+
+  \section{Constant Coefficients}
+  The obvious starting point when studying any PDE problem is to study the case of constant coefficients as a starting point. If we take \autoref{theory:eq:jumptransport} with $g, \mu$ and $D$ constant then we have a a very simple equation to discretize and study:
+
+  \begin{equation}
+    u_t = - g \cdot u_w - \mu \cdot u + \frac{D}{2} u_{ww}.
+  \end{equation}
+
 \end{document}

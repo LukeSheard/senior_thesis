@@ -77,17 +77,14 @@
     \phi_t = - (\hat{g} \cdot \phi)_x - \hat{\mu} \cdot \phi + \frac{\e{-x}}{2} \left( \left( \hat{D} \cdot \phi \right)_{xx} - \left( \hat{D} \cdot \phi \right)_x \right).
   \end{equation}
 
-  However if we are the maintain a constant steady state as stipulated by \cite{sheldon1967} then we must perform a simple change of function. The steady state $u(w) \propto w^{\gamma}$ reduces to $\phi(x) \propto \e{x(\gamma +1)}$, which is clearly not constant. However if we reduce to a constant by taking $\e{x(\gamma + 1)} \rho(x) = \phi(x)$ then we have our constant but $\rho$ is governed by the more complicated equation
+  However if we are the maintain a constant steady state as stipulated by \cite{sheldon1967} then we must perform a simple change of function. The steady state $u(w) \propto w^{\gamma}$ reduces to $\phi(x) \propto \e{x(\gamma +1)}$, which is clearly not constant. However if we reduce to a constant by taking $\e{\gamma x} \rho(x) = \phi(x)$ then we have our constant but $\rho$ is governed by the more complicated equation
 
   \begin{equation}
-    \e{x(\gamma + 1)} \rho_t = - (\bar{g} \cdot \rho) - \bar{\mu} \e{x(\gamma + 1)} \rho + \frac{\e{-x}}{2} \left( \left( \bar{D} \cdot \rho \right)_{xx} - \left( \bar{D} \cdot \rho \right)_x \right).
+    \e{\gamma x} \rho_t = - (\bar{g} \cdot \rho)_x - \bar{\mu} \e{\gamma x} \rho + \frac{\e{-x}}{2} \left( \left( \bar{D} \cdot \rho \right)_{xx} - \left( \bar{D} \cdot \rho \right)_x \right).
   \end{equation}
 
   % TODO: Check Calculation and write constant steady state
   \subsection{Constant Steady State}
-
-  % TODO: discuss coefficients for method
-  \section{Logarithmic Coefficients}
 
   \section{Summary}
   In this chapter we have outlined the realized equations that will be used in \autoref{chapter:method}. Next we will discuss some of the methods that we can use to approach these equations analytically and numerically.
