@@ -2,7 +2,7 @@
 \documentclass[../main.tex]{subfiles}
 \begin{document}
 
-  \chapter{Mathematics of Discretization}\label{chapter:differences}
+  \chapter{Mathematics of Discretization}\label{chapter:fdes}
   The major benefit of studying equations which hold the form of a Transport equation is the large body of research of their solutions and behavior. We begin this chapter by considering the most basic transport equation, the Advection Equation which will allow the introduction of finite difference techniques.
 
   We then follow this through with a discussion of the approach used by \cite{hartvig2011} on the food web framework that they have developed using semi-implicit methods.
@@ -22,10 +22,10 @@
   \begin{eqnarray} \label{diff:eq:advectionbvp}
     u_t + v \, u_x  &=& + d \, u \nonumber \\
     u(0, x) &=& I(x) \nonumber \\
-    u(t, 0) &=& B(x)
+    u(t, 0) &=& B(t)
   \end{eqnarray}
 
-  Using the method of characteristics we consider a point in the domain $\{(t, x) : t, x > 0 \}$ and solve the equation along some characteristic line $(t(s), x(s)) = y(s)$ stemming from an $y_0 \in \Gamma = \{ (0, x) : x \in \mathbb{R}^+ \} \cup \{ (t, 0) : t \in \mathbb{R}^+ \}$. The full details of the method are left to the reader however we find that
+  Using the method of characteristics we consider a point in the domain $\{(t, x) : t, x > 0 \}$ and solve the equation along some characteristic line $(t(s), x(s)) = y(s)$ stemming from an $y_0 \in \Gamma = \{ (0, x) : x \in \mathbb{R}^+ \} \cup \{ (t, 0) : t \in \mathbb{R}^+ \}$. The full details of the method are left to the reader, or in Chapter 4 of \autoref{holmes2007}, however we find that
 
   \begin{equation} \label{diff:eq:advectionsol}
     u(t, x) = \left\lbrace \begin{array}{ll}
@@ -34,13 +34,9 @@
   \end{array} \right.
   \end{equation}
 
-  along any characteristic $x = vt$. We note that the McKendrick-von Foerster will take a form similar to this if the growth and death terms are constants, but the problem will become more complicated if the coefficients are functions of $t, x$ or non-linear. However this problem does allow us to introduce the idea of \emph{domain of dependence}.
+  along any characteristic $x = vt$. We note that the McKendrick-von Foerster equation will take a form similar to this if the growth and death terms are constants, but the problem will become more complicated if the coefficients are functions of $t, x$ or non-linear. However this problem does allow us to introduce the idea of \emph{domain of dependence}.
 
-  \begin{definition}[Analytic Domain of dependence]
-    Given any BVP and/or IVP on $U \subseteq \mathbb{R}^n$ the with solution $\varphi$, the domain of dependence for for any $x \in U$ is the set $V \subseteq U$ that $\varphi(x)$ depends on to be calculated.
-  \end{definition}
-
-  \autoref{diff:fig:domainofdep} shows the characteristic lines for, the blue lines represent characteristics which depend on the time axis boundary condition while the red arrows depend on the spatial axis initial condition. Looking at the analytic solution to \autoref{diff:eq:advectionbvp} we see that the initial condition is carried along the characteristic.
+  Given any BVP and/or IVP on $U \subseteq \mathbb{R}^n$ the with solution $\varphi$, the domain of dependence for for any $x \in U$ is the set $V \subseteq U$ that $\varphi(x)$ depends on to be calculated. \autoref{diff:fig:domainofdep} shows the characteristic lines for, the blue lines represent characteristics which depend on the time axis boundary condition while the red arrows depend on the spatial axis initial condition. Looking at the analytic solution to \autoref{diff:eq:advectionbvp} we see that the initial condition is carried along the characteristic.
 
   \begin{figure}[hbt]
     \centering
@@ -94,7 +90,7 @@
     For a function $u: U \to \mathbb{R}$ the first forwards difference of $u$ is
 
     \begin{equation}
-      \Delta u = u(x + \Delta x) - u(x).
+      \Delta_f[u](x) = u(x + \delta x) - u(x).
     \end{equation}
   \end{definition}
 
@@ -102,78 +98,157 @@
     For a function $u: U \to \mathbb{R}$ the first backwards difference of $u$ is
 
     \begin{equation}
-      \Delta u = u(x) - u(x - \Delta x).
+      \Delta_b[u](x) = u(x) - u(x - \delta x).
     \end{equation}
   \end{definition}
 
-  These two definitions form the basis for finite difference theory. Just as with the differential operator we have that it is linear and satisfies the Leibniz rule. The proof of this is left to the reader, but follows exactly the same method as for derivatives. It is easy to construct the $n^{th}$ forward difference ($\Delta ^n[f](x)$) by simply considering $\Delta [\Delta ^{n-1}[f]](x)$.
+  These two definitions form the basis for finite difference theory, and we can take any difference $\Delta[u](x)$ as a combination of forward and backward differences. Just as with the differential operator we have that the difference operator is linear and satisfies the Leibniz rule. The proof of this is left to the reader, but follows exactly the same method as for derivatives. It is easy to construct the $n^{th}$ difference ($\Delta ^n[f](x)$) by simply considering $\Delta [\Delta ^{n-1}[f]](x)$.
 
   When we consider the partial derivative of $u: \mathbb{R} \to \mathbb{R}$ we simply have that
 
   \begin{equation}
-    u'(x) = \lim_{\Delta x \to 0} \frac{\Delta[u](x)}{\Delta x}
+    u'(x) = \lim_{\delta x \to 0} \frac{\Delta[u](x)}{\delta x}
   \end{equation}
 
-  which can easily be extended to higher dimensions. Using Taylor's theorem, we know that
+  which can easily be extended to higher dimensions.
+
+  \subsection{Taylor's Theorem,  Big \& little O Notation}
+  When calculating an equation we can replace terms by their approximate sizes if, for instance, the exact size is not required. In such cases we generally replace terms by their big (or little) O size. If $f, g : \mathbb{R} \to \mathbb{R}$, the informal assertions that $f(x)$ is big-O (or little-O) of $g(x)$ can be rigorously defined by comparing their sizes in limits around a point.
+
+  \begin{definition}[Big O]
+    We formally define that
+    \begin{equation}
+      f(x) = O(g(x))
+    \end{equation}
+    as $x \to a$ if and only if
+    \begin{equation}
+      \limsup_{x \to a} \left\vert \frac{f(x)}{g(x)} \right\vert < \infty
+    \end{equation}
+  \end{definition}
+
+  \begin{definition}[Little O]
+    We define
+    \begin{equation}
+      f(x) = o(g(x))
+    \end{equation}
+    as $x \to a$ if
+    \begin{equation}
+      \lim_{x \to a} \left\vert \frac{f(x)}{g(x)} \right\vert = 0
+    \end{equation}
+  \end{definition}
+
+  Intuitively calling $f(x)$ big-O of $g(x)$ states that $f(x)$ is ``about as big'' as $g(x)$, while if $f(x)$ is little-o of $g(x)$ then it is ``much smaller'' in size that $g(x)$. A very classical theorem in calculus is Taylor's theorem, which finite difference
+
+  \begin{theorem}[Taylor]
+    If $u : \mathbb{R} \to \mathbb{R}$ is $k$ times differentiable in a region around $x \in \mathbb{R}$ then $u(x + \delta x)$ can be written as
+
+    \begin{equation} \label{diff:eq:taylor}
+      u(x + \delta x) = u(x) + (\delta x) \, u'(x) + ... + \frac{(\delta x)^k}{k!} u^{(k)}(x) + h_k(x + \delta x) (\delta x)^k
+    \end{equation}
+
+    for some function $h_k(x)$ such that $\lim_{\delta x \to 0} h_k(x + \delta x) = 0$.
+  \end{theorem}
+
+  If \autoref{diff:eq:taylor} is reformulated to give a polynomial estimation $P(x)$ for $u(x)$ then the approximation error for a taylor polynomial $R_k(x) = u(x) - P_k(x)$ can be estimated as $o((\delta x)^k)$. Using this theorem we know that if $u$ is a differentiable function then by taking $k = 1$ that
 
   \begin{equation}
-    u(x + \Delta x) = u(x) + \Delta x u'(x) + O(x)
+    u(x + \delta x) = u(x) + \delta x u'(x) + o(\delta x)
   \end{equation}
 
   and so we can take the difference equation
 
-  \begin{equation}
-    \frac{\Delta[u](x)}{\Delta x} = u(x) + O(x)
+  \begin{equation} \label{diff:eq:bigoapprox}
+    \frac{\Delta[u](x)}{\delta x} = u(x) + O(\delta x)
   \end{equation}
 
-  as a first order approximation to a first derivative of $u$. By combining $n^{th}$ forward and backward differences we can construct higher order approximations to derivatives at higher orders and higher orders of accuracy.
+  an approximation to a first derivative of $u$. Given a difference equation $d_k(x)$ that depends on $k = \delta x$ that represents the left hand side of \autoref{diff:eq:bigoapprox} that approximates an $n^{th}$ derivative of $u$ we define the order of the approximation to be the integer $N$ that satisfies
+
+  \begin{equation}
+    d_k(x) - u^{(n)}(x) = O(k^N).
+  \end{equation}
 
   \section{Finite Difference Equation Errors}
-  Since finite difference equations have become such a staple in numerical analysis there are many texts that supply the different coefficients required to approximate derivatives accurately. \cite{fornberg1988} provides a details derivation and set of tables for almost all derivatives required in general PDE problems up to high orders in both accuracy and order.
+  Since finite difference equations have become such a staple in numerical analysis there are many texts that supply the different coefficients required to approximate derivatives accurately. By combining $n^{th}$ forward and backward differences we can construct higher order approximations to derivatives at higher orders and higher orders of accuracy and \cite{fornberg1988} provides a details derivation, as well as, a set of tables for almost all derivatives required for general PDE problems up to high orders in both accuracy and order. We define a \emph{finite difference scheme} as a particular choice of approximation for a collection of derivatives.
 
   However as with all numerical problems issues arise when constructing approximations due to errors that occur with the generation of those approximations themselves. In this section we begin to outline the two main types of error that occur in approximations and introduce the idea of consistency and convergence.
 
   \subsection{Notation}
-  Before we begin talking about the errors generated by finite difference equations we begin by introducing the notation that will be used going forward. Suppose that we are given a partial differential equation of the form
+  Before we move forward discussing the rigorous theory of finite difference equations, their errors and use to approximate partial differential equations we introduce some general theory. As we have seen in \autoref{chapter:theory} we will deal with equations with the form
 
   \begin{equation} \label{diff:eq:pdeprob}
-    L(u) = \frac{\partial u}{\partial t} - \mathcal{L}u
+    L(u) = \frac{\partial u(t, x)}{\partial t} - \mathcal{L}(u(t, x)),
   \end{equation}
 
-  for some linear differential operator $\mathcal{L}$ which is a function $\mathcal{L}(x, u, x_x, ..., u_{x^m})$ for some $m \in \mathbb{N}$, that is that $\mathcal{L}, L :  \mathcal{C}^m \to \mathcal{C}$. We consider $L$ as a function of continuous differentiable functions with root solution $\Psi$, that is $L(\Psi) = 0$.
+  where $\mathcal{L}$ is a $m$ times differential operator in $x$ (with most cases satisfying $m < 3$). Given this we have that if $u$ is in the set of real valued functions, $C^m$, which are a one times differentiable function in $t$ and $m$ times differentiable function in $x$ on some region in the plane $\Omega = \mathbb{R}^+ \times U$ for some $U \subset \mathbb{R}^+$ then $L : C^M \to C$. We aim to solve the partial differential equation $L(u) = 0$ with boundary conditions the boundary of $\Omega$.
 
-  Given a BVP and/or IVP with $L$ as the operator on some domain $D \subseteq \mathbb{R}^+ \times R$, for $R \subseteq \mathbb{R}$ then we discretize the the domain in to a mesh-grid using a partition on some finite subdomain of time, that is the mesh-grid $M$ represents the continuous domain $[0, T] \times R \subset D$. We index the time steps by $n$ using a $\Delta t = h$ and the spatial steps by $j$ using $\Delta x = k$. Using these indexes we can notate any value of some function on the mesh grid as
+  To do this we first discretise our domain in to a mesh grid. In \autoref{diff:fig:meshgrid} we discretise an area of the plane $[0, T] \times [0, X]$ in to a grid spaced with $\delta x = k$ and $\delta t = h$. We index the time axis by $n$ and the spatial axis by $j$, thus for any function $u : [0, T] \times [0, X] \to \mathbb{R}$ we write $u(t, x) = u(n h, j k) = u^n_j$.
 
-  \begin{equation}
-    u(t, x) = u(n \Delta t, j \Delta x) = u(n \cdot h, j \cdot k) = u^n_j.
-  \end{equation}
+  \begin{figure}[hbt]
+    \centering
+    \begin{tikzpicture}
+      \draw[help lines] (0, 0) grid (6, 6);
+
+      \draw[thick, ->] (0, 0) -- (0, 7.2) node[anchor=south east] {$t$};
+      \draw[thick, ->] (0, 0) -- (7.2, 0) node[anchor=north west] {$x$};
+      \draw (0, 0) -- (6, 0) -- (6, 6) -- (0, 6);
+      \node[anchor=east] (t) at (0, 6) {$T$};
+      \node[anchor=north] (t) at (0, 6) {$X$};
+
+      \draw[fill=black] (3, 3) circle (0.1cm);
+      \node[anchor=north west] (name) at (3, 3) {$u^n_j$};
+
+      \node[anchor=east] (j) at (0, 4) {$n+1$};
+      \node[anchor=east] (j) at (0, 3) {$n$};
+      \node[anchor=east] (j) at (0, 2) {$n-1$};
+
+      \node[anchor=north] (n) at (4, 0) {$j+1$};
+      \node[anchor=north] (n) at (3, 0) {$j$};
+      \node[anchor=north] (n) at (2, 0) {$j-1$};
+
+      \draw[thick, <->] (2, -0.7) -- (3, -0.7) node[anchor=north east] {$k$};
+      \draw[thick, <->] (-1.2, 2) -- (-1.2, 3) node[anchor=north east] {$h$};
+    \end{tikzpicture}
+
+    \caption{An example mesh-grid for the region $[0, T] \times [0, X]$ with an illustration of a grid on the central region of the domain. \label{diff:fig:meshgrid}}
+  \end{figure}
+
+  With this numerical realization of the domain for a partial differential equation, and a choice of finite difference scheme we construct a finite difference equation $D^n_j$ which takes a $C^m$ function, $u$, and returns a combination of $u^m_i$ for relative values of $m$ and $i$ to $n$ and $j$.
+
+  \begin{example}
+    Consider the advection equation again with a first order approximation for the time and spatial derivatives. Then our finite difference equation states that
+
+    \begin{equation} \label{diff:eq:advectionexample}
+      D^n_j(u) = \frac{1}{h} u^{n+1}_j + \left( \frac{\upsilon}{k} \right) u^n_{j+1} + \left( \frac{-1}{h} - \frac{\upsilon}{k} \right) u^n_j.
+    \end{equation}
+  \end{example}
 
   \subsection{Consistency} \label{diff:sec:consistency}
   When considering the appropriateness of a finite difference equation to model a particular problem there are three problems that arise, the most easy of these to understand is consistency. The broad definition of consistency is that a finite difference equation $D$ is consistent with a partial differential equation $L$ if the truncation error of $D$ from $L$ tends to $0$ for smaller mesh grid approximations.
 
-  To formally introduce consistency consider a PDE in them form of \autoref{diff:eq:pdeprob} with a true solution $\Phi$. Suppose that we take any finite difference equation $D: \mathcal{C}^m \to \mathcal{C}$ to approximate \autoref{diff:eq:pdeprob} and let $\phi$ be the solution to $D(u) = 0$.
+  To formally introduce consistency consider a PDE in them form of \autoref{diff:eq:pdeprob} with a true solution $\Phi$. Suppose that we take any finite difference equation $D^n_j$ to approximate \autoref{diff:eq:pdeprob} and let $\phi$ be a non-zero solution to $D(u) = 0$.
 
   \begin{definition}[Truncation Error]
-    For any problem described above the \emph{Truncation error} at any grid point $(n, j)$ is given as
+    For any problem described above the \emph{Truncation error} for a function $\psi : \Omega \to \mathbb{R}$ at any grid point $(n, j)$ is given as
 
     \begin{equation}
-      T^n_j(\psi) = D(\psi^n_j) - L(\psi^n_j).
+      T^n_j(\psi) = D^n_j(\psi) - L^n_j(\psi)
     \end{equation}
 
-    If $\Phi$, the true solution of $L$ is known then the local truncation error $\tau^n_j$ is defined as $T^n_j(\Phi)$.
+    where $L^n_j$ represents $L(u)$ evaluated at $(t, x) = (n h, j k)$.
   \end{definition}
 
-  If $\tau^n_j = O(h^p)$ then $D$ is said to be an order $p$ method, and in reality most finite difference equations are of order $p$ for some $p \in \mathbb{N}$. However this is not always the case and this is why we rely on consistency in a numerical calculation. $T^n_j$ gives an estimate of the error of replacing $L(v^n_j)$ by $F(v^n_j)$. This gives arise to a formal definition of consistency.
+  % Clear up global truncation error
+  While we can consider the global truncation of a finite difference approximation, by considering $D$ acting upon arbitrary functions $v$, if $v = \Phi$ is the true solution of $L$ and is known then the local truncation error $\tau^n_j$ is defined as $T^n_j(\Phi)$. If $\tau^n_j = O(h^p)$ then $Dv$ is said to be an approximation order $p$ method, and in reality most finite difference equations are of order $p$ for some $p \in \mathbb{N}$. However this is not always the case and this is why we rely on consistency in a numerical calculation. $T^n_j$ gives an estimate of the error of replacing $L^n_j(v)$ by $D^n_j(v)$. This gives arise to a formal definition of consistency.
 
   \begin{definition}[Consistency]
-    A finite difference equation $D$ is consistent to a partial differential equation $L$ as described above. Then if $v$ is any function, with a sufficient number of continuous derivatives such that $L(v^n_j)$ can be evaluated, $D$ is considered consistent with $L$ if
+    A finite difference approximation $D^n_j$ is consistent to a partial differential equation $L$ as described above. Then if $v$ is any function, with a sufficient number of continuous derivatives such that $L^n_j(v)$ can be evaluated, $D^n_j$ is considered consistent with $L$ if
 
     \begin{equation}
-      \lim_{k, h \to 0} T^n_j(v) = \lim_{k, h \to 0} F(v^n_j) - L(v^n_j) \to 0.
+      \lim_{k, h \to 0} T^n_j(v) = \lim_{k, h \to 0} D^n_j(v) - L^n_j(v) = 0.
     \end{equation}
   \end{definition}
 
-  If $v = \Phi$ then $T^n_j(v) = \tau^n_j$ and the truncation error coincides with the local truncation error. So another definition of consistency is that the limiting value of the local truncation error is $0$. Suppose that we review \autoref{diff:eq:advectionfde} as an approximation to \autoref{diff:eq:advection}, having engineered the scheme using \cite{fornberg1988} we know that rearranging to gain an equation in the form $D(u) = 0$ the truncation error can be written as
+  If $v = \Phi$ then $T^n_j(v) = \tau^n_j$, so another definition of consistency is that the limiting value of the local truncation error is $0$. Suppose that we review \autoref{diff:eq:advectionfde} as an approximation to \autoref{diff:eq:advection}, having engineered the scheme using \cite{fornberg1988} seen in \autoref{diff:eq:advectionexample} we know that rearranging to gain an equation in the form $D(u) = 0$ the truncation error can be written as
 
   \begin{equation}
     T(v) = D(v) - L(v) = O(h) + v O(k) - d O(1) = O(h) + O(k)
@@ -184,24 +259,70 @@
   \subsection{Stability}
   Numerical stability theory stems more directly from analytical stability theory. Suppose that $L(u)$ is a PDE problem with two analytic solutions $\Psi_1$ and $\Psi_2$, one can analyze how likely a perturbation in the initial condition is to affect the system as it tends to one of the two analytic solutions. This same principle applies to numerical methods. The essential idea defining stability is that the numerical process should not cause any small perturbations introduced through rounding at any stage to grow and ultimately dominate the solution, similar to the study of whether a small perturbation introduced into an analytic solution will cause the solution to tend to a dominant solution.
 
+  For mathematical analysis a definition of stability is given with relation to the growth of the exact solution to the finite difference equation. Therefore if rounding errors of perturbations to the solution are introduced at any stage in time then these will also be bounded if the exact solution is bounded.
+
   \begin{definition}[Numerical Stability]
-    A numerical method is stable if for every $T > 0$, there exists a constant $c(T) > 0$ such that
+    A numerical method is stable if, for a fixed spatial domain $[0, X]$, for every $T > 0$ there exists a constant $c(T) > 0$ such that
 
     \begin{equation}
-      || \boldsymbol\phi_n ||_h < c(T)
+      || \boldsymbol\phi^n ||_k < c(T)
     \end{equation}
 
-    for all $n$, as $h, k \to 0$. Where $\boldsymbol\phi_n$ represents the vector $( \phi_j )$
+    for all $n = 0, 1, .. , T / h$ and $h \to 0$, $k \to 0$.
   \end{definition}
 
-  \subsubsection{Fourier Method}
-  The Fourier method is one of the most common methods for analyzing the stability of a finite difference equation. We assume that the scheme admits a solution in the form
+  The norm $|| \cdot ||_k$ is a grid dependent norm of , for example
+
+  The norm $|| \cdot ||_k$ is a grid dependent Euclidean Norm for the space, for example
+
+  $$
+    || \mathbf{u} ||_k = \left( k \sum |u_j|^2 \right)^{1/2},
+  $$
+
+  acting on the vector $\boldsymbol\phi^n = (\phi^n_j : j = 0, .. , X / k) \in \mathbb{R}^{(X / k) + 1}$.
+
+  \subsubsection{Eigenvalue Method}
+  If a finite difference approximation can be written in matrix form $u^{n+1} = S^{n+1} u^0$, where $u^n$ represents a vector of the values of $u^n_j$ for all $j$ and $S^{n+1}$ is an invertible matrix which consolidates our finite difference approximation in to a matrix. Then we can determine the stability of that approximation by considering the eigenvalues of the matrix $S$. If all the eigenvalues, $\lambda_S$, of $S$ satisfy $| \lambda_S | \leq 1$ then we have that
 
   \begin{equation}
-    \upsilon^n_j = \lambda^n(\omega) \e{i j \omega \Delta x}.
+    |S^n z | < \infty
   \end{equation}
 
-  We then define
+  as $n \to \infty$ for all vectors $z$. Thus, if we consider the eigenvalues for this matrix we can determine the stability of the system.
+
+  \begin{example}
+    Suppose that we consider the approximation for the advection equation see in \autoref{diff:eq:advectionexample}. This can be written in with $S$ in the tridiagonal form
+
+    \begin{equation}
+      \begin{pmatrix}
+        a & b & \\
+        c & a & b \\
+          & c & \ddots & \ddots & \\
+          &   & \ddots & a & b \\
+          &   &        & c & a
+      \end{pmatrix}
+    \end{equation}
+
+    and thus has eigenvalues $\lambda_j = a + 2 \sqrt{bc} \cos{\left( \frac{j \pi}{J} \right)}$ for $j = 1, ... , J-1$ if there are $J$ points in our mesh grid along the $x$ axis. Considering the worst case for this eigenvalue spectrum will yield a relation between $h$ and $k$ that must be satisfied for the method to be stable.
+  \end{example}
+
+  This way of analyzing the stability of a scheme is not easily generalized since it involves finding the eigenvalues of the corresponding S-matrix. Therefore we look at a different way of determining stability - the Fourier method or von Neumann method.
+
+
+  \subsubsection{Fourier Method}
+  The Fourier method is one of the most common methods for analyzing the stability of a finite difference equation. If the spatial differential operator, $\mathcal{L}$, in $L$ is linear then in the limit as $h, k \to 0$ the numerical error for a finite difference equation also satisfies $L$ since
+
+  $$
+    L(\phi - \Phi) = (\phi - \Phi)_t - \mathcal{L}(\phi - \Phi) = (\phi_t - \mathcal{L}(\phi)) - (\Phi_t - \mathcal{L}(\Phi)).
+  $$
+
+  We assume that the scheme admits a solution in the form
+
+  \begin{equation}
+    \upsilon^n_j = \lambda^n(\omega) \e{i j \omega \Delta x}
+  \end{equation}
+
+  and define
 
   \begin{equation}
     G(\omega) = \frac{\lambda^{n+1}(\omega)}{\lambda^n(\omega)}
@@ -214,9 +335,6 @@
   \end{equation}
 
   for all $0 \leq \omega \Delta x \leq \pi$. If a finite difference equation is stable then it is said to be conditionally stable if there is dependence on $G(\omega)$ for the stability condition to hold, otherwise the scheme is unconditionally stable. The Fourier method is the most widely used but can break down for non-linear methods since it can be more difficult to solve for $G(\omega)$.
-
-  \subsubsection{Eigenvalue Method}
-  The Eigenvalue method
 
   \section{Convergence Theory}
   In the previous section we defined the Truncation Error of a finite difference equation as the approximation error for a partial differential equation. In this section we deal with the numerical error.
@@ -240,12 +358,6 @@
 
     for every initial condition and for every $T > 0$
   \end{definition}
-
-  The norm $|| \cdot ||_k$ is a grid dependent Euclidean Norm for the space, for example
-
-  $$
-    || \mathbf{u} ||_k = \left( k \sum |u_j|^2 \right)^{1/2}.
-  $$
 
   The most major result in the theory of \emph{linear} finite difference equations is the  Lax–Richtmyer Equivalence theorem.
 

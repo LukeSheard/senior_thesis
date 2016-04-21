@@ -2,7 +2,40 @@
 \documentclass[11pt, a4paper]{report}
 
 % Document Layout
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=0.9in]{geometry}
+
+% Title page
+\usepackage{xcolor}
+\usepackage[some]{background}
+
+\definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
+\backgroundsetup{
+  scale=1,
+  angle=0,
+  opacity=1,
+  contents={\begin{tikzpicture}[remember picture,overlay]
+   \path [fill=titlepagecolor] (current page.west)rectangle (current page.north east);
+   \draw [color=white, very thick] (5,0)--(5,0.5\paperheight);
+  \end{tikzpicture}}
+}
+
+\makeatletter
+\def\printauthor{%
+  {\large \@author}}
+\makeatother
+
+\makeatletter
+\def\printtitle{%
+  \textcolor{white}{\fontsize{32px}{3cm}\selectfont \@title}}
+
+\makeatother
+
+\title{Finite Difference Schemes for the McKendrick-von Foerster Equation}
+\author{
+  Luke Sheard \\
+  MMath Project 2016 \\
+  University of York
+}
 
 % Font Encoding
 \usepackage[default,extralight,semibold]{sourceserifpro}
@@ -26,14 +59,12 @@
 \usepackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
+\newtheorem{remark}{Remark}[chapter]
+\newtheorem{example}[remark]{Example}
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{corollary}[theorem]{Corollary}
-
-\theoremstyle{remark}
-\newtheorem{remark}{Remark}[chapter]
-\newtheorem{example}[remark]{Example}
 
 % File Structure
 \usepackage{subfiles}
@@ -57,10 +88,6 @@
 \renewcommand{\subsubsectionautorefname}{Subsubsection}
 
 \newcommand{\e}[1]{ \operatorname{e}^{#1}}
-
-
-\title{Finite Difference Schemes for the McKendrick Von Foerster Equation}
-\author{Luke Sheard}
 
 \begin{document}
   \def\biblio{}

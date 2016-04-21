@@ -1,41 +1,48 @@
 %!TEX root = ../main.tex
 \documentclass[../main]{subfiles}
 
-% Abstract
-\makeatletter
-\renewenvironment{abstract}{%
-  \if@twocolumn
-    \section*{\abstractname}%
-  \else
-    \small
-    \begin{center}%
-      {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
-    \end{center}%
-    \quotation
-  \fi}
-  {\if@twocolumn\else\endquotation\fi}
-\makeatother
-
 \begin{document}
-  % \begin{titlepage}
-  %   \maketitle
-  % \end{titlepage}
-  %
-  % \pagenumbering{roman}
-  % \begin{abstract}
-  %   \addcontentsline{toc}{chapter}{Abstract}
-  %   This is my Abstract
-  % \end{abstract}
-  %
-  % \newpage
-  % \listoffigures
-  % \tableofcontents
-  %
-  % % Set Options for Main Document
+  \begin{titlepage}
+    \BgThispage
+    \newgeometry{left=1.5cm,right=6cm,bottom=2cm}
+    \vspace*{0.30\textheight}
+    \noindent
+    \printtitle
+    \vspace*{2cm}\par
+    \begin{minipage}{1.1\linewidth}
+      \begin{minipage}[c]{0.25\linewidth}
+        \begin{flushright}
+          \printauthor
+        \end{flushright}
+      \end{minipage} \hspace{15pt}
+      %
+      \begin{minipage}{0.02\linewidth}
+        \rule{1pt}{225pt}
+      \end{minipage} \hspace{25pt}
+      %
+      \begin{minipage}[c]{0.73\linewidth}
+        \begin{abstract}
+          \raggedright
+          While the mechanics of fish populations and the mathematical models that govern them are extremely well studied, there is still large effort needed before numerical methods for those models can be accurately evaluated. This project researches the underlying models of fish predation as well as the numerical theory the implementation of those models.
+        \end{abstract}
+      \end{minipage}
+    \end{minipage}
+    \noindent
+  \end{titlepage}
+  \restoregeometry
+
+  \pagenumbering{roman}
+  \setlength{\parindent}{0.3em}
+
+  \newpage
+  \listoffigures
+  \tableofcontents
+
+  \chapter{Introduction}\label{chapter:introduction}
+  % Set Options for Main Document
   \setlength{\parskip}{0.75em}
   \pagenumbering{arabic}
 
-  \chapter{Introduction}\label{chapter:introduction}
   The study of partial differential equations (PDEs) has always been of interest due to their close relation with the real world systems. In particular a class of PDEs called transport equations relate real world convection-diffusion systems to analytic equations and are studied extremely widely. In this project we study the details around one particular transport equation: the McKendrick-von Foerster equation.
 
   \begin{equation} \label{intro:eq:mvf}
@@ -45,8 +52,9 @@
   \section{Marine System Populations}
   The current study of marine systems when related back to the original work of \cite{mckendrick1926} and \cite{foerster1959} has, on the face of it, changed remarkably. The work of \cite{silvert1978} who developed the ``standard'' equation for modeling marine population, \autoref{intro:eq:mvf}, has become central to the principles of modeling population. The work of \cite{silvert1980} later coupled growth at one size to death at another and developed equations which constructed the growth and mortality of organisms based upon their weight.
 
-  Issues however begin to arise when developing even more sophisticated and accurate population models. The work of \cite{datta2010} introduced the Jump-Growth Equation and showed that the McKendrick-von Foerster equation can be taken as a good approximation. However the Jump-Growth equation suffers because of it's complexity. The non-linear equation is impossible to solve analytically currently, and thus research relies heavily on numerical methods for solutions.
+  Issues however begin to arise when developing even more sophisticated and accurate population models. The work of \cite{datta2010} introduced the Jump-Growth Equation and showed that the McKendrick-von Foerster equation can be taken as a good approximation. However the Jump-Growth equation suffers because of it is complexity. The non-linear equation is impossible to solve analytically currently, and thus research relies heavily on numerical methods for solutions.
 
   \section{Project Outline}
+  This project investigats the current methods used in research around \autoref{intro:eq:mvf}. In \autoref{chapter:sizetheory} we highlight the historical context of the equation and it is derivation and then examine more recent research into a new equation, the Jump Growth Equation. Before examining the current numerical methods in \autoref{chapter:method} we review the mathematical theory behind the method of finite differences in \autoref{chapter:fdes}. 
 
 \end{document}
