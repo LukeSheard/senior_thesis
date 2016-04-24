@@ -38,7 +38,7 @@
 
   Given any BVP and/or IVP on $U \subseteq \mathbb{R}^n$ the with solution $\varphi$, the domain of dependence for for any $x \in U$ is the set $V \subseteq U$ that $\varphi(x)$ depends on to be calculated. \autoref{diff:fig:domainofdep} shows the characteristic lines for, the blue lines represent characteristics which depend on the time axis boundary condition while the red arrows depend on the spatial axis initial condition. Looking at the analytic solution to \autoref{diff:eq:advectionbvp} we see that the initial condition is carried along the characteristic.
 
-  \begin{figure}[hbt]
+  \begin{figure}[htb]
     \centering
     \begin{tikzpicture}[scale=0.75]
       \draw[help lines] (0,0) grid (7,7);
@@ -62,7 +62,7 @@
     \caption{The characteristic lines for the solution of \autoref{diff:eq:advectionsol} with constant coefficients. There is no overlap between the lines which means that the solution can be smooth if the boundary conditions along $\Gamma$ are smooth. The domain of dependence for traverses the direction of each arrowhead line. \label{diff:fig:domainofdep}}
   \end{figure}
 
-  While it is not obvious how this definition will be useful now, it will become extremely important in the analysis of stability of the numerical methods that we discuss in the next section.
+  While it is not obvious how this definition will be useful now, it will become extremely important in the analysis of stability of the numerical methods that we discuss in the next chapter.
 
   \subsection{Numerical Solutions to the Advection Equation} \label{diff:sec:fdesintro}
   Suppose now that we want to solve the advection numerically. Writing the equation using limits we have that
