@@ -25,7 +25,7 @@
     u(t, 0) &=& B(t)
   \end{eqnarray}
 
-  Using the method of characteristics we consider a point in the domain $\{(t, x) : t, x > 0 \}$ and solve the equation along some characteristic line $(t(s), x(s)) = y(s)$ stemming from an $y_0 \in \Gamma = \{ (0, x) : x \in \mathbb{R}^+ \} \cup \{ (t, 0) : t \in \mathbb{R}^+ \}$. The full details of the method are left to the reader, or in Chapter 4 of \autoref{holmes2007}, however we find that
+  Using the method of characteristics we consider a point in the domain $\{(t, x) : t, x > 0 \}$ and solve the equation along some characteristic line $(t(s), x(s)) = y(s)$ stemming from an $y_0 \in \Gamma = \{ (0, x) : x \in \mathbb{R}^+ \} \cup \{ (t, 0) : t \in \mathbb{R}^+ \}$. The full details of the method are left to the reader, or in Chapter 4 of \cite{holmes2006}, however we find that
 
   \begin{equation} \label{diff:eq:advectionsol}
     u(t, x) = \left\lbrace \begin{array}{ll}
@@ -173,7 +173,7 @@
   However as with all numerical problems issues arise when constructing approximations due to errors that occur with the generation of those approximations themselves. In this section we begin to outline the two main types of error that occur in approximations and introduce the idea of consistency and convergence.
 
   \subsection{Notation}
-  Before we move forward discussing the rigorous theory of finite difference equations, their errors and use to approximate partial differential equations we introduce some general theory. As we have seen in \autoref{chapter:theory} we will deal with equations with the form
+  Before we move forward discussing the rigorous theory of finite difference equations, their errors and use to approximate partial differential equations we introduce some general theory. As we have seen in \autoref{chapter:sizetheory} we will deal with equations with the form
 
   \begin{equation} \label{diff:eq:pdeprob}
     L(u) = \frac{\partial u(t, x)}{\partial t} - \mathcal{L}(u(t, x)),

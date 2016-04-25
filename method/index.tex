@@ -1,39 +1,45 @@
 %!TEX root = ../main.tex
-\documentclass[../main]{subfiles}
+\documentclass[../main.tex]{subfiles}
 \begin{document}
   \chapter{Method}\label{chapter:method}
 
-  In this chapter we review the current methods for numerically solving partial-integro differential equations. We begin by considering the simplest model for the Advection Equation, which serves as a model for the McKendrick-von Foerster Equation with constant coefficients. We will discuss the boundary conditions and domain, before adding in the diffusion term. Finally we consider the work of \cite{hartvig2011} who discusses a stable first order method for the McKendrick-von Foerster Equation when integral coefficients are used.
+  In this chapter we review the current methods for numerically solving partial-integro differential equations. We begin by considering the simplest model for the McKendrick-von Foerster equation with constant coefficients, and a simple first order approximation to solve it.
 
-  \section{Upwind / Downwind Scheme}
-  \begin{equation}
-    L(u) = \frac{\partial u}{\partial t} + g \frac{\partial u}{\partial x} - \mu \cdot u
-  \end{equation}
+  To further this, we consider the work of \cite{hartvig2011} who discusses a stable first order method for the McKendrick-von Foerster Equation when integral coefficients are used, but works equally well for constant coefficients. Finally we discuss the boundary conditions for the problem and adding the diffusion term to the problem.
 
-  We consider for the advection equation with the source term on the domain $[0, T] \times [0, X]$. By simply replacing the time derivative with a forward difference, and the spatial derivative with a backwards difference we can get a first order approximation
-
-  which gives a finite difference equation
+  \section{First Order Upwind / Downwind Scheme}
+  We first consider the McKendrick-von Foerster Equation with constant coefficients
 
   \begin{equation}
-    D(u) = \frac{u^{n+1}_j - u^n}{h} + g \frac{u^n_{j} - u^n_{j-1}}{k} - \mu u^n_j
+    L(u) = \frac{\partial u}{\partial t} + g \frac{\partial u}{\partial x} + \mu \cdot u
   \end{equation}
 
-  as an approximation to $L$.
+  on the discretised domain $[0, T] \times [0, W]$. By simply replacing the time derivative with a forward difference, and the spatial derivative with a backwards difference we can get a first order approximation and yields a finite difference equation
+
+  \begin{equation}
+    D(u) = \frac{u^{n+1}_j - u^n}{h} + g \frac{u^n_{j} - u^n_{j-1}}{k} + \mu u^n_j
+  \end{equation}
+
+  as an approximation to $L(u)$.
 
   \subsection{Courant Condition}
-  We make this choice because of the analytic domain on the analytic domain of dependence of $L$. The domain of dependence is illustrated in \autoref{diff:fig:domainofdep} and highlights that the solutions at $u^n_j$ depends on the region behind it in time and space, therefore if we choose a forward difference for the spatial derivative then the numerical domain of dependence would not contain the analytic domain of dependence and this would make the scheme unstable. The work of \cite{courant1928} showed that if the \emph{Courant Number}
+  At this point one might question of the choice of the downwind scheme (backwards difference) as a choice for the spatial derivative. This is is ultimately for stability of the overall scheme. As discussed in \autoref{chapter:fdes} solutions to partial differential equations have an analytic domain of dependence. We saw the domain of dependence for the advection equation in \autoref{diff:fig:domainofdep} and the McKendrick-von Foerster Equation has the same domain of dependence.
+
+  The work of \cite{courant1928} researched the idea of a \emph{Courant Number}, which in a simple terms says that the numerical domain of dependence - the region on which the numerical solution depends for information about it's solution - must contain the analytic domain of dependence.
+
+  Formally \cite{courant1928} stated that if the Courant Number
 
   \begin{equation}
-    C = \frac{\upsilon \delta t}{\delta x} > C_{\mbox{\small max}};
+    C = \frac{\upsilon \delta t}{\delta x} > C_{\mbox{\small max}},
   \end{equation}
 
-  where $\upsilon$ is the largest magnitude of velocity that information travels in the system and $C_{\mbox{\small max}}$ is a constant that depends on the approximations used (but is normally $1$), then the finite difference approximation is unstable. This is analogous to the abstract domain of dependence requirement, the numerical approximation must transfer information faster than the analytic equation.
+  where $\upsilon$ is the largest magnitude of velocity that information travels in the system and $C_{\mbox{\small max}}$ is a constant that depends on the approximations used (but is normally $1$), then the finite difference approximation is unstable.
 
-  \subsection{Stability}
+  \subsection{Stability of the Scheme}
   If we are to to solve the problem $L(u) = 0$ then we can rearrange $D^n_j$ to solve for $u^{n+1}_j$, which gives a recursive formula for $\mathbf{u}^n$:
 
-  \begin{equation}
-    u^{n+1}_j = \left(1 + h \cdot \mu - \frac{gh}{k} \right) + \frac{gh}{k} u^n_{j-1}
+  \begin{equation} \label{method:eq:mvffde}
+    u^{n+1}_j = \left(1 + h \cdot \mu - \frac{gh}{k} \right) u^n_j + \frac{gh}{k} u^n_{j-1}
   \end{equation}
 
   This gives us a matrix problem in the form $\mathbf{u}^{n+1} = A \mathbf{u}^n$ where
@@ -54,22 +60,29 @@
     k \leq \frac{g}{\mu}.
   \end{equation}
 
-  \subsection{Boundary Conditions}
-  One of the issue that arises when we run this approximation is that we are not appropriately dealing with the boundary conditions. That is that the matrix $A$ in \autoref{method:eq:noboundary} does not appropriately deal with the derivatives in the boundary. On the left boundary for $x = 0$ we find that
+  \subsection{Solution}
+  To numerically solve the problems described in this chapter we will create a iPython notebook for each problem and produce a contour plot for each solution.
+
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.5\textwidth]{_assets/advection_noPeriod.png}
+    \caption{\label{method:fig:advectionPlotNoPeriod} A simulation of the advection equation with no left boundary conditions specified.}
+  \end{figure}
+
+  Using \autoref{method:eq:mvffde} as a model for iterating through each time step and a gauassian distribution as the initial condition we produce \autoref{method:fig:advectionPlotNoPeriod}, which clearly shows a decreasing solution through time. However we note that above the line $w = gt$ the solution is zero, since there has been no specified left boundary condition. This is becasue the matrix $A$ in \autoref{method:eq:noboundary} does not appropriately deal with the derivatives in the boundary. On the left boundary for $x = 0$ we find that
 
   \begin{equation}
     u^{n+1}_0 = \left( 1 + h \cdot \mu - \lambda \right) u^n_0,
   \end{equation}
 
-  which is clearly not an accurate approximation for $L(u)$.
+  which is clearly not an accurate approximation for $L(u)$. While a plotting the numerical solution for this would, without further inspection shows that the left boundary is decreasing exponentially, which can be seen in \autoref{method:fig:boundayDepreciation}.
 
-  \begin{figure}
+  \begin{figure}[htb]
     \centering
-    \includegraphics[width=0.5\textwidth]{_assets/advection_noPeriod.png}
-    \caption{\label{diff:fig:advectionPlotNoPeriod} A simulation of the Advection Equation with a source term with in correct boundary approximations.}
+    \includegraphics[width=0.5\textwidth]{_assets/uBoundary.png}
+    \caption{\label{method:fig:boundayDepreciation} Size absolute value of the solution along the of left boundary.}
   \end{figure}
 
-% TODO: Fill in details about method
   To solve this issue, and throughout the problems here after, we imposed periodic boundary conditions on the domain so that
 
   \begin{equation}
@@ -88,17 +101,22 @@
     \end{pmatrix}.
   \end{equation}
 
-  Running a simulation for this approximation we clearly see the periodic boundary conditions.
-  % TODO: Discussion of Periodic boundary conditions
+  A simulation confirms that the boundary conditions work as we see the solution decaying further over time and continuing the move to the right through the spatial domain for weight.
 
-  \begin{figure}
+  \begin{figure}[htb]
     \centering
     \includegraphics[width=0.5\textwidth]{_assets/advection_period.png}
-    \caption{\label{diff:fig:advectionPlotPeriod} A simulation including periodic boundary conditions.}
+    \caption{\label{method:fig:advectionPeriodic} The numerical solution of the McKendrick-von Foerster Equation with periodic boundary conditions.}
   \end{figure}
 
-  \section{Implicit Schemes}
+  \section{Diffusion Term \& Implicit Methods}
 
+  \begin{figure}[htb]
+    \centering
+    \subfloat[$k$ = ]{\includegraphics[width=0.45\textwidth]{_assets/diffusionLowK.png}}
+    \subfloat[$k$ = ]{\includegraphics[width=0.45\textwidth]{_assets/diffusionHighK.png}}
+    \caption{\label{method:fig:diffusionKChange} The numerical solution of the McKendrick-von Foerster Equation with periodic boundary conditions.}
+  \end{figure}
 
 
 \end{document}
