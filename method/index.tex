@@ -17,7 +17,7 @@
   on the discretised domain $[0, T] \times [0, W]$. By simply replacing the time derivative with a forward difference, and the spatial derivative with a backwards difference we can get a first order approximation and yields a finite difference equation
 
   \begin{equation}
-    D(u) = \frac{u^{n+1}_j - u^n}{h} + g \frac{u^n_{j} - u^n_{j-1}}{k} + \mu u^n_j
+    D^n_j(u) = \frac{u^{n+1}_j - u^n}{h} + g \frac{u^n_{j} - u^n_{j-1}}{k} + \mu u^n_j
   \end{equation}
 
   as an approximation to $L(u)$.
@@ -110,13 +110,28 @@
   \end{figure}
 
   \section{Diffusion Term \& Implicit Methods}
+  Issues begin to arise when we consider the diffusion term within the upwind/downwind approximations, however \autoref{method:fig:diffusionKChange} illustrates what happens when we decrease $k < 1$ (by increasing the number of grid points with in the mesh-grid).
 
   \begin{figure}[htb]
     \centering
-    \subfloat[$k$ = ]{\includegraphics[width=0.45\textwidth]{_assets/diffusionLowK.png}}
-    \subfloat[$k$ = ]{\includegraphics[width=0.45\textwidth]{_assets/diffusionHighK.png}}
-    \caption{\label{method:fig:diffusionKChange} The numerical solution of the McKendrick-von Foerster Equation with periodic boundary conditions.}
+    \subfloat[Solution $k$ = 2]{\includegraphics[width=0.45\textwidth]{_assets/diffusionLowK.png}}
+    \subfloat[Solution $k$ = 0.4]{\includegraphics[width=0.45\textwidth]{_assets/diffusionHighK.png}}
+    \caption{\label{method:fig:diffusionKChange} Comparison of the upwind/downwind scheme.}
   \end{figure}
+
+  Even though the diffusion term should increase the analytic stability of the solution, we find that it also increase the instability of the numerical approximations. To solve this we take a new approach, by using implicit approximations instead of the explicit approximations.
+
+  Instead of finding an equation for $u^{n+1}_j$ in terms of $u^n_i, i = ..., j-1, j, j+1, ... $ we aim to find an equation in the form $C \cdot \textbf{u}^{n+1} = c \cdot \textbf{u}^n$. If we begin to consider the McKendrick-von Foerster Equation with non-constant coefficients so that
+
+  \begin{equation}
+    L(u) = u_t + (g(w) \cdot u)_w + \mu(w) \cdot u
+  \end{equation}
+
+  then using the approximation from \cite{hartvig2011} we can construct a first order implicit approximation
+
+  \begin{equation}
+    D^n_j(u) = \frac{u^n_j - u^{n-1}_j}{h} + \frac{g^{n-1}_j u^n_j - g^{n-1}_{j-1} u^n_{j-1}}{k} + \mu^{n-1}_j u^n_j
+  \end{equation}
 
 
 \end{document}
