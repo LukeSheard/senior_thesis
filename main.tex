@@ -27,7 +27,6 @@
 \makeatletter
 \def\printtitle{%
   \textcolor{white}{\fontsize{32px}{3cm}\selectfont \@title}}
-
 \makeatother
 
 \title{Finite Difference Schemes for the McKendrick-von Foerster Equation}
@@ -43,16 +42,20 @@
 \usepackage{setspace}
 
 % Paragraph Spacing
+\usepackage{setspace}
+\usepackage{caption}
 \setlength{\parindent}{0.3em}
 \setlength{\parskip}{0.5em}
 \linespread{1.3}
-\renewcommand{\baselinestretch}{1.5}
+\captionsetup{font={stretch=1.5}}
+\setstretch{1.5}
 
 % Ams Packages
 \usepackage{amsmath, amssymb}
 
 % Appendix
 \usepackage[toc,page]{appendix}
+\setcounter{tocdepth}{1}
 
 % Tikz
 \usepackage{tikz}

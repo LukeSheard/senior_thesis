@@ -127,9 +127,41 @@
     L(u) = u_t + (g(w) \cdot u)_w + \mu(w) \cdot u
   \end{equation}
 
-  then using the approximation from \cite{hartvig2011} we can construct a first order implicit approximation
+  then using the approximation from \cite{hartvig2011}, which relies upon the semi-implicit derivative for products in \cite{press1992}, we can construct a first order implicit approximation
 
   \begin{equation}
     D^n_j(u) = \frac{u^n_j - u^{n-1}_j}{h} + \frac{g^{n-1}_j u^n_j - g^{n-1}_{j-1} u^n_{j-1}}{k} + \mu^{n-1}_j u^n_j.
   \end{equation}
+
+  This method is stable under the assumption that $g, \mu$ are non-linear, however we note that the approximation for the derivative in weight is only first order. To look for a higher order method we consider the average of the forwards and backwards derivatives, and add in the diffusion term to yield a finite difference equation
+
+  \begin{equation}\label{method:eq:fullimplicit}
+    D^n_j(u) = \frac{u^n_j - u^{n-1}_j}{h} + \frac{g^{n-1}_{j+1} u^n_{j+1} - g^{n-1}_{j-1} u^n_{j-1}}{2k} + \mu^{n-1}_j u^n_j - \frac{D^{n-1}_{j+1} u^n_{j+1} - 2 D^{n-1}_j u^n_j + D^{n-1}_{j-1} u^n_{j-1}}{k^2}.
+  \end{equation}
+
+  A simulation of this scheme shows the solution, while it diffuses to a stationary distribution of $u_{\mathrm{stab}}(t, x) = 0$, is calculated without numerical error and thus the scheme is stable. However we note that the inclusion of the $\mu \cdot u$ term will kill the population over time, much like the solution of the McKendrick-von Foerster Equation without diffusion. Comparing this to the solution of the equation with $\mu = 0$ we see that the solution tends to a constant over time. Closer to the solution that we aim to see earlier in \autoref{chapter:modelequations}.
+
+  \begin{figure}[htb]
+    \centering
+    \subfloat[$\mu = 0.05$]{\includegraphics[width=0.5\textwidth]{_assets/diffusionSol.png}}
+    \subfloat[$\mu = 0$]{\includegraphics[width=0.5\textwidth]{_assets/diffusionSolNoDeath.png}}
+    \caption{\label{method:fig:diffusionSolution} The numerical solution of the McKendrick-von Foerster Equation with periodic boundary conditions and diffusion.}
+  \end{figure}
+
+  \subsection{Integral Coefficients}
+  Finally, we consider modelling the integral coefficients using the approximation in \autoref{method:eq:fullimplicit} derived from the work of \cite{hartvig2011}. However, we find that this scheme converges to the $u(t, x) = 0$ solution extremely quickly for any values of $K, \beta, \sigma, \alpha$. Evidence of this is seen in \autoref{method:fig:integralCoefficientsFail} where the solution is clearly decreasing in magnitude over time.
+
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.5\textwidth]{_assets/integralCoeffsFail.png}
+    \caption{\label{method:fig:integralCoefficientsFail} The numerical solution of the McKendrick-von Foerster Equation with periodic boundary conditions.}
+  \end{figure}
+
+  \section{Discussion}
+
+  While problems in partial differential equation theory do have numerical methods the study of the non-linear equations is still in it's infancy and methods are not thoroughly developed. Much of the research and time spent around constructing our attempt at solving the McKendrick-von Foerster Equation with diffusion and non-linear coefficients has come from studying the problem with constants instead of functions and experimentation with approximations which are stable for those methods.
+
+  Clearly from our study in \autoref{method:fig:diffusionKChange} and \autoref{method:fig:diffusionSolution} we see that while the diffusion term can greatly improve the stability of the solution to the equations we will need to study the death term $\mu(w) \cdot u(t, w)$ if we are to avoid this dominating the derivative and making the finite difference equation converge to a $u(t, x) = 0$ steady state solution. 
+
+
 \end{document}
