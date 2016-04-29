@@ -34,7 +34,7 @@
   \end{array} \right.
   \end{equation}
 
-  along the characteristics $x - vt = C$. We note that the McKendrick-von Foerster equation will take a form similar to this if the growth and death terms are constants, but the problem will become more complicated if the coefficients are functions of $t, x$ or non-linear. However this problem does allow us to introduce the idea of \emph{domain of dependence}.
+  along the characteristics $x - vt = C$. We note that the McKendrick-von Foerster Equation will take a form similar to this if the growth and death terms are constants, but the problem will become more complicated if the coefficients are functions of $t, x$ or non-linear. However this problem does allow us to introduce the idea of \emph{domain of dependence}.
 
   \begin{figure}[htb]
     \centering
@@ -65,7 +65,7 @@
   While it is not obvious how this definition will be useful now, it will become extremely important in the analysis of stability of the numerical methods that we discuss in the \autoref{method:sec:courant}.
 
   \subsection{Numerical Solutions to the Advection Equation} \label{diff:sec:fdesintro}
-  When constructing a numerical method for solving the advection equation we can first consider writing the equation using limits.
+  When constructing a numerical method for solving the Advection Equation we can first consider writing the equation using limits.
 
   \begin{equation} \label{diff:eq:finiteadvection}
     \lim_{\Delta t \to 0} \frac{u(t + \Delta t, x) - u(t, x)}{\Delta t} + v \lim_{\Delta x \to 0} \frac{u(t, x + \Delta x) - u(t, x)}{\Delta t} = d u(t, x).
@@ -215,7 +215,7 @@
   With this numerical realisation of the domain for a partial differential equation, and a choice of finite difference approximation, we construct a finite difference equation $D^n_j$ which takes a $C^m$ function, $u$, and returns a combination of $u^m_i$ for relative values of $m$ and $i$ to $n$ and $j$.
 
   \begin{example}
-    Consider the advection equation with a first order approximation for the time and spatial derivatives. Then our finite difference equation states that
+    Consider the Advection Equation with a first order approximation for the time and spatial derivatives. Then our finite difference equation states that
 
     \begin{equation} \label{diff:eq:advectionexample}
       D^n_j(u) = \frac{1}{h} u^{n+1}_j + \left( \frac{\upsilon}{k} \right) u^n_{j+1} + \left( \frac{-1}{h} - \frac{\upsilon}{k} \right) u^n_j.
@@ -288,7 +288,7 @@
   as $n \to \infty$ for all vectors $z$. Thus, if we consider the eigenvalues for this matrix, we can determine the stability of the system.
 
   \begin{example}
-    Suppose that we consider the approximation for the advection equation seen in \autoref{diff:eq:advectionexample}, this can be written with $S$ in the tridiagonal form
+    Suppose that we consider the approximation for the Advection Equation seen in \autoref{diff:eq:advectionexample}, this can be written with $S$ in the tridiagonal form
 
     \begin{equation}
       \begin{pmatrix}

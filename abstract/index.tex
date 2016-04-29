@@ -25,7 +25,7 @@
         \begin{abstract}
           \onehalfspacing
           \raggedright
-          While the mechanics of fish populations and the mathematical models that govern them are extremely well studied, there is still large effort needed before numerical methods for those models can be accurately evaluated. This project researches the underlying models of fish predation as well as the numerical theory the implementation of those models.
+          While the mechanics of fish populations have been researched for years, recent efforts by \cite{datta2010} and \cite{hartvig2011} derive fully non-linear equations to describe their mechanics. Unfortunately these equations are difficult to solve and require numerical methods to solve and methods with a high order of approximation are still yet to be thoroughly developed. This project considers the derivation and current application of finite differences to the equations derived and aims to construct a higher order method to numerically solve these non-linear problems.
         \end{abstract}
       \end{minipage}
     \end{minipage}
@@ -46,18 +46,32 @@
   \setlength{\parskip}{0.75em}
   \pagenumbering{arabic}
 
-  The study of partial differential equations (PDEs) has always been of interest due to their close relation with the real world systems. In particular a class of PDEs called transport equations relate real world convection-diffusion systems to analytic equations and are studied extremely widely. In this project we study the details around one particular transport equation: the McKendrick-von Foerster equation.
+  The study of partial differential equations has always been of interest due to their close relation with the real world systems. In particular a class of PDEs called transport equations relate real world convection-diffusion systems to analytic equations and are studied extremely widely. In this project we study the details around one particular transport equation: the McKendrick-von Foerster Equation.
 
   \begin{equation} \label{intro:eq:mvf}
     \frac{\partial u(t, w)}{\partial t} = - \frac{\partial}{\partial w} \left(g(w) \cdot u(t, w) \right) - \mu(w) \cdot u(t, w)
   \end{equation}
 
-  \section{Marine System Populations}
-  The current study of marine systems when related back to the original work of \cite{mckendrick1926} and \cite{foerster1959} has, on the face of it, changed remarkably. The work of \cite{silvert1978} who developed the ``standard'' equation for modeling marine population, \autoref{intro:eq:mvf}, has become central to the principles of modeling population. The work of \cite{silvert1980} later coupled growth at one size to death at another and developed equations which constructed the growth and mortality of organisms based upon their weight.
-
-  Issues however begin to arise when developing even more sophisticated and accurate population models. The work of \cite{datta2010} introduced the Jump-Growth Equation and showed that the McKendrick-von Foerster equation can be taken as a good approximation. However the Jump-Growth equation suffers because of it is complexity. The non-linear equation is impossible to solve analytically currently, and thus research relies heavily on numerical methods for solutions.
-
   \section{Project Outline}
-  This project investigats the current methods used in research around \autoref{intro:eq:mvf}. In \autoref{chapter:sizetheory} we highlight the historical context of the equation and it is derivation and then examine more recent research into a new equation, the Jump Growth Equation. Before examining the current numerical methods in \autoref{chapter:method} we review the mathematical theory behind the method of finite differences in \autoref{chapter:fdes}.
+  This project investigates the current methods used in research around \autoref{intro:eq:mvf} and similar equations, in particular focussing on trying to derive a higher order finite difference equation for the Jump Growth Equation
+
+  \begin{align}\label{intro:eq:jumpgrowth}
+    \frac{\partial \phi(w)}{\partial t}
+    = \int ( &- k(w', w) \phi(w)\phi(w') \nonumber \\
+    & - k(w, w')\phi(w')\phi(w) \nonumber \\
+    & + k(w - Kw', w')\phi(w - Kw')\phi(w')) \: \mathrm{d}w'.
+  \end{align}
+
+  In \autoref{chapter:sizetheory} we begin by discussing the historical background and derivation of the McKendrick-von Foerster Equation. We study the similarities between the equation transport equations which will serve as the basis for our approach towards constructing finite difference approximations for the equations in \autoref{chapter:method}. Lastly we give a short overview the Jump Growth Equation derived by \cite{datta2010}. We show that the McKendrick-von Foerster Equation with diffusion is an approximation to the Jump Growth Equation and thus decide to focus on the simpler equation given by this approximation.
+
+  \autoref{chapter:modelequations} constructs the model equations that we will use in \autoref{chapter:method} by considering the derivation of the coefficients in the Jump Growth Equation. In the second half of the chapter we consider the steady states of these equations which will be useful when analysing the solutions to our numerical approximations as we can consider how close to the steady states our solutions are.
+
+  Before performing the final calculations and discussion of approximating the Jump Growth Equation and the McKendrick-von Foerster Equation in \autoref{chapter:method}, we introduce the mathematical framework of finite difference equations in \autoref{chapter:fdes}. We discuss the history of difference equations and their application to the simple model problem of the Advection Equation
+
+  \begin{equation}
+    \frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x} = d u.
+  \end{equation}
+
+  Finally we discuss how to handle the errors generated by approximating the equations derived in \autoref{chapter:modelequations} by finite difference equations and how we aim to minimise this error so that our approximations converge correctly.
 
 \end{document}

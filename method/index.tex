@@ -3,29 +3,27 @@
 \begin{document}
   \chapter{Method}\label{chapter:method}
 
-  In this chapter we review the current methods for numerically solving partial-integro differential equations. We begin by considering the simplest model for the McKendrick-von Foerster equation with constant coefficients, and a simple first order approximation to solve it.
+  In this chapter we review the current methods for numerically solving partial-integro differential equations. We begin by considering the simplest model for the McKendrick-von Foerster Equation with constant coefficients and a simple first order approximation to solve it.
 
-  To further this, we consider the work of \cite{hartvig2011} who discusses a stable first order method for the McKendrick-von Foerster Equation when integral coefficients are used, but works equally well for constant coefficients. Finally we discuss the boundary conditions for the problem and adding the diffusion term to the problem.
+  To further this, we consider the work of \cite{hartvig2011} who discusses a stable first order method for the McKendrick-von Foerster Equation when integral coefficients are used, but works equally well for constant coefficients. Finally we discuss the boundary conditions and add the diffusion term to the problem.
 
   \section{First Order Upwind / Downwind Scheme}
   We first consider the McKendrick-von Foerster Equation with constant coefficients
 
   \begin{equation}
-    L(u) = \frac{\partial u}{\partial t} + g \frac{\partial u}{\partial x} + \mu \cdot u
+    L(u) = \frac{\partial u(t, w)}{\partial t} + g \frac{\partial u(t, w)}{\partial w} + \mu \cdot u(t, w)
   \end{equation}
 
-  on the discretised domain $[0, T] \times [0, W]$. By simply replacing the time derivative with a forward difference, and the spatial derivative with a backwards difference we can get a first order approximation and yields a finite difference equation
+  on the discretised domain $[0, T] \times [0, W]$. By simply replacing the time derivative with a forward difference and the spatial derivative with a backwards difference, we yield a first order approximation
 
   \begin{equation}
-    D^n_j(u) = \frac{u^{n+1}_j - u^n}{h} + g \frac{u^n_{j} - u^n_{j-1}}{k} + \mu u^n_j
+    D^n_j(u) = \frac{u^{n+1}_j - u^n}{h} + g \frac{u^n_{j} - u^n_{j-1}}{k} + \mu u^n_j.
   \end{equation}
 
-  as an approximation to $L(u)$.
-
   \subsection{Courant Condition} \label{method:sec:courant}
-  At this point one might question of the choice of the downwind scheme (backwards difference) as a choice for the spatial derivative. This is is ultimately for stability of the overall scheme. As discussed in \autoref{chapter:fdes} solutions to partial differential equations have an analytic domain of dependence. We saw the domain of dependence for the advection equation in \autoref{diff:fig:domainofdep} and the McKendrick-von Foerster Equation has the same domain of dependence.
+  At this point one might question of the choice of the downwind scheme (backwards difference) as a choice for the spatial derivative. Ultimately this is for stability of the overall scheme. As discussed in \autoref{chapter:fdes} solutions to partial differential equations have an analytic domain of dependence. In \autoref{diff:fig:domainofdep} we saw the domain of dependence for the Advection Equation and due to the underlying structure the McKendrick-von Foerster Equation inherits from the Advection Equation has the same domain of dependence.
 
-  The work of \cite{courant1928} researched the idea of a \emph{Courant Number}, which in a simple terms says that the numerical domain of dependence - the region on which the numerical solution depends for information about it's solution - must contain the analytic domain of dependence.
+  \cite{courant1928} researched the idea of a \emph{Courant Number}. In simple terms, the numerical domain of dependence (the region on which the numerical solution depends for information about it's solution) must contain the analytic domain of dependence.
 
   Formally \cite{courant1928} stated that if the Courant Number
 
@@ -33,16 +31,16 @@
     C = \frac{\upsilon \delta t}{\delta x} > C_{\mbox{\small max}},
   \end{equation}
 
-  where $\upsilon$ is the largest magnitude of velocity that information travels in the system and $C_{\mbox{\small max}}$ is a constant that depends on the approximations used (but is normally $1$), then the finite difference approximation is unstable.
+  where $\upsilon$ is the largest magnitude of velocity that information travels in the system and $C_{\mbox{\small max}}$ is a constant that depends on the approximations used (normally $1$), then the finite difference approximation is unstable.
 
   \subsection{Stability of the Scheme}
   If we are to to solve the problem $L(u) = 0$ then we can rearrange $D^n_j$ to solve for $u^{n+1}_j$, which gives a recursive formula for $\mathbf{u}^n$:
 
   \begin{equation} \label{method:eq:mvffde}
-    u^{n+1}_j = \left(1 + h \cdot \mu - \frac{gh}{k} \right) u^n_j + \frac{gh}{k} u^n_{j-1}
+    u^{n+1}_j = \left(1 + h \cdot \mu - \frac{gh}{k} \right) u^n_j + \frac{gh}{k} u^n_{j-1}.
   \end{equation}
 
-  This gives us a matrix problem in the form $\mathbf{u}^{n+1} = A \mathbf{u}^n$ where
+  If we let $\lambda = gh k^{-1}$ then the matrix problem form of \autoref{method:eq:mvffde} is given by $\mathbf{u}^{n+1} = A \mathbf{u}^n$ where
 
   \begin{equation}\label{method:eq:noboundary}
     A = \begin{pmatrix}
@@ -51,14 +49,10 @@
         & \lambda & \ddots & \ddots & \\
         &   & \ddots & 1 + h \cdot \mu - \lambda & 0 \\
         &   &        & \lambda & 1 + h \cdot \mu - \lambda
-    \end{pmatrix}
+    \end{pmatrix}.
   \end{equation}
 
-  which, using the eigenvalue method gives us a stability condition of
-
-  \begin{equation}
-    k \leq \frac{g}{\mu}.
-  \end{equation}
+  Using the eigenvalue method we find that the stability condition for this method is given by $k \leq g \mu^{-1}$.
 
   \subsection{Solution}
   To numerically solve the problems described in this chapter we will create a iPython notebook for each problem and produce a contour plot for each solution.
@@ -66,30 +60,30 @@
   \begin{figure}[htb]
     \centering
     \includegraphics[width=0.5\textwidth]{_assets/advection_noPeriod.png}
-    \caption{\label{method:fig:advectionPlotNoPeriod} A simulation of the advection equation with no left boundary conditions specified.}
+    \caption{\label{method:fig:advectionPlotNoPeriod} Numerical solution of the Advection Equation with left boundary conditions unspecified, as expected we see that the initial condition decays along characteristic lines of the form $w - g t = C$ for $C \in \mathbb{R}$.}
   \end{figure}
 
-  Using \autoref{method:eq:mvffde} as a model for iterating through each time step and a gauassian distribution as the initial condition we produce \autoref{method:fig:advectionPlotNoPeriod}, which clearly shows a decreasing solution through time. However we note that above the line $w = gt$ the solution is zero, since there has been no specified left boundary condition. This is becasue the matrix $A$ in \autoref{method:eq:noboundary} does not appropriately deal with the derivatives in the boundary. On the left boundary for $x = 0$ we find that
+  Using \autoref{method:eq:mvffde} as a model for iterating through each time step and using a Gaussian distribution as the initial condition we produce \autoref{method:fig:advectionPlotNoPeriod}. This clearly shows a decreasing solution through time. However we note that above the line $w = gt$ the solution is zero, since there has been no specified left boundary condition. This is because the matrix $A$ in \autoref{method:eq:noboundary} does not appropriately deal with the derivatives in the boundary. On the left boundary for $w = 0$ we find that
 
   \begin{equation}
     u^{n+1}_0 = \left( 1 + h \cdot \mu - \lambda \right) u^n_0,
   \end{equation}
 
-  which is clearly not an accurate approximation for $L(u)$. While a plotting the numerical solution for this would, without further inspection shows that the left boundary is decreasing exponentially, which can be seen in \autoref{method:fig:boundayDepreciation}.
+  which is clearly not an accurate approximation for $L(u)$. While plotting the numerical solution for this would, without further inspection, show that the left boundary is decreasing exponentially, which can be seen in \autoref{method:fig:boundayDepreciation}.
 
   \begin{figure}[htb]
     \centering
     \includegraphics[width=0.5\textwidth]{_assets/uBoundary.png}
-    \caption{\label{method:fig:boundayDepreciation} Size absolute value of the solution along the of left boundary.}
+    \caption{\label{method:fig:boundayDepreciation} Logarithmic size of the solution to \autoref{method:fig:advectionPlotNoPeriod} along the left boundary $w = 0$.}
   \end{figure}
 
-  To solve this issue, and throughout the problems here after, we imposed periodic boundary conditions on the domain so that
+  To solve this issue and throughout the problems here after, we imposed periodic boundary conditions on the domain so that
 
   \begin{equation}
-    u(t, X_{\mathrm{Low}}) = u(t, X_{\mathrm{Hight}})
+    u(t, W_{\mathrm{Low}}) = u(t, W_{\mathrm{High}})
   \end{equation}
 
-  for our choice of spatial domain $[X_{\mathrm{Low}}, X_{\mathrm{High}}]$. Biologically we can interpret this in terms of birth and death, as on the boundary $x = 0$ we have that the the approximation looks to the oldest individuals and the growth rate $g$ to determine the number of individuals who are born and have a weight less than the lower boundary on the domain. By taking $X_{\mathrm{low}} = k$ then we have that $u^n_{-1} = 0$ which is a suitable birth weight. When we add this condition the matrix $A$ is rewritten to include the extra term in the top right and
+  for our choice of spatial domain $[W_{\mathrm{Low}}, W_{\mathrm{High}}]$. Biologically we can interpret this in terms of birth and death. On the boundary $w = 0$ the approximation considers the oldest individuals and the growth rate $g$ to determine the number of individuals who are born and have a weight less than the lower boundary of the domain. By taking $W_{\mathrm{low}} = k$ then we have that $u^n_{-1} = 0$ which is an appropriate birth weight. When we add this condition, the matrix $A$ is rewritten to include the extra term in the top right and
 
   \begin{equation}
     A = \begin{pmatrix}
@@ -101,16 +95,16 @@
     \end{pmatrix}.
   \end{equation}
 
-  A simulation confirms that the boundary conditions work as we see the solution decaying further over time and continuing the move to the right through the spatial domain for weight.
+  A simulation confirms that the boundary conditions works. We see the solution decaying further over time and continuing to move to the right through the spatial domain for weight.
 
   \begin{figure}[htb]
     \centering
     \includegraphics[width=0.5\textwidth]{_assets/advection_period.png}
-    \caption{\label{method:fig:advectionPeriodic} The numerical solution of the McKendrick-von Foerster Equation with periodic boundary conditions.}
+    \caption{\label{method:fig:advectionPeriodic} The numerical solution of the McKendrick-von Foerster Equation with periodic boundary conditions. The solution continues decaying from the left boundary $w = 0$ when the solution carried along any characteristic meets the right boundary.}
   \end{figure}
 
   \section{Diffusion Term \& Implicit Methods}
-  Issues begin to arise when we consider the diffusion term within the upwind/downwind approximations, however \autoref{method:fig:diffusionKChange} illustrates what happens when we decrease $k < 1$ (by increasing the number of grid points with in the mesh-grid).
+  Issues begin to arise when we consider the diffusion term within the upwind/downwind approximations.\autoref{method:fig:diffusionKChange} illustrates what happens for two different values of $k$ when we add the diffusion term using a second order downwind approximation.
 
   \begin{figure}[htb]
     \centering
@@ -119,49 +113,58 @@
     \caption{\label{method:fig:diffusionKChange} Comparison of the upwind/downwind scheme.}
   \end{figure}
 
-  Even though the diffusion term should increase the analytic stability of the solution, we find that it also increase the instability of the numerical approximations. To solve this we take a new approach, by using implicit approximations instead of the explicit approximations.
+  Even though the diffusion term should increase the analytic stability of the solution, we find that it also increases the instability of the numerical approximations. To solve this we take a new approach, using implicit approximations instead of the explicit approximations.
 
   Instead of finding an equation for $u^{n+1}_j$ in terms of $u^n_i, i = ..., j-1, j, j+1, ... $ we aim to find an equation in the form $C \cdot \textbf{u}^{n+1} = c \cdot \textbf{u}^n$. If we begin to consider the McKendrick-von Foerster Equation with non-constant coefficients so that
 
   \begin{equation}
-    L(u) = u_t + (g(w) \cdot u)_w + \mu(w) \cdot u
+    L(u) = u_t + (g(w) \cdot u)_w + \mu(w) \cdot u.
   \end{equation}
 
-  then using the approximation from \cite{hartvig2011}, which relies upon the semi-implicit derivative for products in \cite{press1992}, we can construct a first order implicit approximation
+  Using the approximation from \cite{hartvig2011}, which relies upon the semi-implicit derivative for products in \cite{press1992}, we can construct a first order implicit approximation
 
   \begin{equation}
     D^n_j(u) = \frac{u^n_j - u^{n-1}_j}{h} + \frac{g^{n-1}_j u^n_j - g^{n-1}_{j-1} u^n_{j-1}}{k} + \mu^{n-1}_j u^n_j.
   \end{equation}
 
-  This method is stable under the assumption that $g, \mu$ are non-linear, however we note that the approximation for the derivative in weight is only first order. To look for a higher order method we consider the average of the forwards and backwards derivatives, and add in the diffusion term to yield a finite difference equation
+  This method is stable under the assumption that $g, \mu$ are non-linear. However we note that the approximation for the derivative in weight is only first order. To look for a higher order method we consider the average of the forwards and backwards derivatives and add in the diffusion term to yield a finite difference equation
 
   \begin{equation}\label{method:eq:fullimplicit}
     D^n_j(u) = \frac{u^n_j - u^{n-1}_j}{h} + \frac{g^{n-1}_{j+1} u^n_{j+1} - g^{n-1}_{j-1} u^n_{j-1}}{2k} + \mu^{n-1}_j u^n_j - \frac{D^{n-1}_{j+1} u^n_{j+1} - 2 D^{n-1}_j u^n_j + D^{n-1}_{j-1} u^n_{j-1}}{k^2}.
   \end{equation}
 
-  A simulation of this scheme shows the solution, while it diffuses to a stationary distribution of $u_{\mathrm{stab}}(t, x) = 0$, is calculated without numerical error and thus the scheme is stable. However we note that the inclusion of the $\mu \cdot u$ term will kill the population over time, much like the solution of the McKendrick-von Foerster Equation without diffusion. Comparing this to the solution of the equation with $\mu = 0$ we see that the solution tends to a constant over time. Closer to the solution that we aim to see earlier in \autoref{chapter:modelequations}.
-
   \begin{figure}[htb]
     \centering
     \subfloat[$\mu = 0.05$]{\includegraphics[width=0.5\textwidth]{_assets/diffusionSol.png}}
     \subfloat[$\mu = 0$]{\includegraphics[width=0.5\textwidth]{_assets/diffusionSolNoDeath.png}}
-    \caption{\label{method:fig:diffusionSolution} The numerical solution of the McKendrick-von Foerster Equation with periodic boundary conditions and diffusion.}
+    \caption{\label{method:fig:diffusionSolution} Comparison between values of $\mu$ for the McKendrick-von Foerster Equation with diffusion and periodic boundary conditions.}
   \end{figure}
 
-  \subsection{Integral Coefficients}
-  Finally, we consider modelling the integral coefficients using the approximation in \autoref{method:eq:fullimplicit} derived from the work of \cite{hartvig2011}. However, we find that this scheme converges to the $u(t, x) = 0$ solution extremely quickly for any values of $K, \beta, \sigma, \alpha$. Evidence of this is seen in \autoref{method:fig:integralCoefficientsFail} where the solution is clearly decreasing in magnitude over time.
+  While the solution shown in \autoref{method:fig:diffusionSolution} shows that the scheme is stable, it still diffuses to a stationary distribution of $u_{\mathrm{stab}}(t, x) = 0$. However we note that the inclusion of the $\mu \cdot u$ term will kill the population over time, much like the solution of the McKendrick-von Foerster Equation without diffusion. Comparing this to the solution of the equation with $\mu = 0$ we see that the solution tends to a constant over time. Closer to the solution that we aim to see earlier in \autoref{chapter:modelequations}.
+
+  \chapter{Discussion}
+
+  In this project we have discussed the historical context or the McKendrick-von Foerster Equation and the Jump-Growth Equation and the numerical methods which are used when approproaching similar problems. However we have not tried to apply those techniques to the McKendrick-von Foerster Equation with integral coefficients.
+
+  \section{Integral Coefficients}
+  If we consider modelling the integral coefficients using the approximation in \autoref{method:eq:fullimplicit} derived from the work of \cite{hartvig2011}. Applying the same method used for the earlier results in \autoref{method:fig:diffusionSolution} with the implicit approximations from \autoref{method:eq:fullimplicit} we can attempt to solve the equation numerically.
+
+  Unfortunately, as \autoref{method:fig:integralCoefficientsFail} shows, the solution does not behave as expected using the same choice of parameters as Figure 2 \cite{datta2011}. While we do see the same decay as \autoref{method:fig:diffusionSolution} the growth and diffusion terms do not have as much effect on the equation and thus the solution does not shift through the domain as much as the constant coefficient solution.
 
   \begin{figure}[htb]
     \centering
     \includegraphics[width=0.5\textwidth]{_assets/integralCoeffsFail.png}
-    \caption{\label{method:fig:integralCoefficientsFail} The numerical solution of the McKendrick-von Foerster Equation with periodic boundary conditions.}
+    \caption{\label{method:fig:integralCoefficientsFail} Numerical solution to the McKendrick-von Foerster Equation with integral coefficients. The solution diffuses much slower than the McKendrick-von Foerster Equation with constant coefficients but still decays over time, still at a slower rate than the constant coefficient problem.}
   \end{figure}
 
-  \section{Discussion}
+  \section{Summary}
 
-  While problems in partial differential equation theory do have numerical methods the study of the non-linear equations is still in it's infancy and methods are not thoroughly developed. Much of the research and time spent around constructing our attempt at solving the McKendrick-von Foerster Equation with diffusion and non-linear coefficients has come from studying the problem with constants instead of functions and experimentation with approximations which are stable for those methods.
+  While this project has not made direct advances on numerical methods for the various forms of the McKendrick-von Foerster Equation and it's approximations to the Jump Growth Equation we have outlined a detailed framework for developing new methods from the existing methods and the the world of \cite{hartvig2011}.
+
+  While problems in partial differential equation theory do have numerical methods the study of the non-linear equations in this project is still in it's infancy and methods are not thoroughly developed. Much of the research and time spent around constructing our attempt at solving the McKendrick-von Foerster Equation with diffusion and non-linear coefficients has come from studying the problem with constants instead of functions and experimentation with approximations which are stable for those methods.
 
   Clearly from our study in \autoref{method:fig:diffusionKChange} and \autoref{method:fig:diffusionSolution} we see that while the diffusion term can greatly improve the stability of the solution to the equations we will need to study the death term $\mu(w) \cdot u(t, w)$ if we are to avoid this dominating the derivative and making the finite difference equation converge to a $u(t, x) = 0$ steady state solution.
 
+  Going forward research will need to focus on dealing with the approximation error and stability in the integral coefficients, since it is clear from \autoref{method:fig:integralCoefficientsFail} that they are the root cause of the difficulty when studying the more difficult non-linear equations. Luckily, as we saw in chapter \autoref{chapter:fdes} there is a large body of knowledge already developed around the approximation error and stability of finite difference equations and the same principles developed for approximations differentials can be applied to calculating integrals.
 
 \end{document}
