@@ -4,21 +4,21 @@
 
   \chapter{Model Equations}\label{chapter:modelequations}
 
-  In this chapter we build on \autoref{chapter:sizetheory} to construct a fully derived equation to model in \autoref{chapter:method}. We begin by considering numerical interpretations of feeding kernels and prey selection then construct the various predation coefficients for \autoref{theory:eq:jumpdiffusion}.
+  In this chapter we build on \autoref{chapter:sizetheory} to construct a fully derived equation to model in \autoref{chapter:method}. We begin by considering numerical interpretations of ``feeding kernels'' and prey selection, then construct the various predation coefficients for \autoref{theory:eq:jumpdiffusion}.
 
-  \section{Feeding Kernel}
-  Central to the models that we are studying is the idea of a feeding kernel which is the rate at which a predator eats prey of a different size. Centralized around the idea that `big fish eat smaller fish' we assume that make predators select their prey based around their own size and thus have a preferred size that they primarily seek out and thus the preference function must be based only on the weight of the individual and their prey.
+  \section{Feeding Kernels}
+  Central to the models that we are studying is the idea of a feeding kernel which is the rate at which a predator eats prey of a different size. While there are many interpretations of feeding kernels we use an interpretation centralised around the idea that `big fish eat smaller fish'. We assume that the likelihood a predators of weight $w$ feeds upon prey with weight $w'$ is based upon both theses weights.
 
-  Taking this key idea of prey size selection we consider the work of \cite{benoit2004} who showed that the feeding kernel for an individual takes the form
+  Based upon this key idea \cite{benoit2004} showed that the feeding kernel for an individual takes the form
 
   \begin{equation}\label{model:eq:kernel}
     k(w, w') = s w^{\alpha} S\left( \frac{w}{w'} \right)
   \end{equation}
 
-  for some parameters $s, \alpha$ to be determined and for the size selection function $s$. This says that the rate at which a predator of weight $w$ feeds is a product of the volumetric search rate $s w^{\alpha}$ and the feeding preference function $S$. In this thesis we make the assumption that $s = 1$ for convenience.
+  for some parameters $s, \alpha$ to be determined and for the size selection function $s$. This states the rate at which a predator of weight $w$ feeds is a product of the volumetric search rate $s w^{\alpha}$ and the feeding preference function $S$. In this thesis we make the assumption that $s = 1$ for convenience.
 
   \subsection{Prey Selection}
-  As discussed the prey selection will peak around some fixed ratio $w / w'$ for predator / prey, which we call $\beta$. Assuming that there is some spread for which individuals will vary from this ratio, noted as $\sigma$ then we can say that the prey selection function $S$ will take the form
+  As discussed the prey selection will peak around some fixed ratio $w / w'$ for predator / prey, which we call $\beta$. Assuming there is some spread for which individuals will vary from this ratio, taken as $\sigma$, then we can say that the prey selection function $S$ will take the form
 
   \begin{equation}
     S(z) = \kappa \exp{\left( - \frac{(z - \beta)^2}{2 \sigma^2} \right)}
@@ -27,7 +27,7 @@
   for some $\kappa$ that we discuss later.
 
   \subsection{Coefficient Functions}
-  When we consider the form of the McKendrick-von Foerster in it is transport equation form we can extract coefficients. Taking \autoref{theory:eq:jumpdiffusion} in the form of \autoref{theory:eq:jumptransport} it reads
+  When we consider the transport equation form of the McKendrick-von Foerster we can extract coefficients. Taking \autoref{theory:eq:jumpdiffusion} in the form of \autoref{theory:eq:jumptransport} it reads
 
   \begin{align}\label{model:eq:jumpdiffusion}
     \frac{\partial u}{\partial t} =
@@ -39,33 +39,33 @@
   Consider the growth term in \autoref{model:eq:jumpdiffusion},
 
   \begin{equation}\label{model:eq:growth}
-    g(w) = \int (K w') k(w, w') u(w').
+    g(w) = \int (K w') k(w, w') u(w'),
   \end{equation}
 
-  One can think of this as the expected value of the mass eaten by individuals of weight $w$. Thus we have that the prey selection function can be thought of as a probability distribution and so we take $$\kappa = \frac{1}{\sigma\sqrt{2 \pi}}.$$
+  we can think of this as the expected value of the mass eaten by individuals of weight $w$. Thus the prey selection function can be thought of as a probability distribution and so we take $$\kappa = \frac{1}{\sigma\sqrt{2 \pi}}.$$
 
-  Thus, if we take \autoref{model:eq:growth} and let $\upsilon = g$ , and define
+  If we take \autoref{model:eq:growth} and let $\upsilon = g$, and define
 
   \begin{eqnarray}
-    R = \mu(w)  &=& \int k(w', w) u(w') \: \mathrm{d}w' \\
+    R = \mu(w)  &=& \int k(w', w) u(w') \: \mathrm{d}w', \\
     D(w)    &=& \int (K w')^2 k(w, w') w(w') \: \mathrm{d}w'
   \end{eqnarray}
 
-  then we have \autoref{theory:eq:jumpdiffusion} in the form of \autoref{theory:eq:transport1d}.
+  we have \autoref{theory:eq:jumpdiffusion} in the form of \autoref{theory:eq:transport1d}.
 
   \section{Steady State Solutions}
-  In marine ecosystems it is been found that the abundance of organisms within weight classes is roughly constant (\cite{sheldon1972}) if those weight classes are distributed logarithmically. Further, averaged over time, \cite{datta2011} observes that this abundance changes rather little suggesting that the system is near steady state.
+  In marine ecosystems it is been found that the abundance of organisms within weight classes is roughly constant (\cite{sheldon1972}) if these weight classes are distributed logarithmically. Further, averaged over time, \cite{datta2011} observes that this abundance changes little suggesting the system is near steady state.
 
-  \cite{benoit2004} found that the McKendrick-von Foerster Equation has a power law steady steady state of the form $\phi(w) \propto w^{-\gamma}$, for $\gamma \in \mathbb{R}^-$. We note though that in the real world such a power law steady state must break down, since it predicts an infinite number of individuals with weight $w = 0$.
+  \cite{benoit2004} found that the McKendrick-von Foerster Equation has a power law steady state of the form $\phi(w) \propto w^{\gamma}$, for $\gamma \in \mathbb{R}^-$. We note that in the real world such a power law steady state must break down since it predicts an infinite number of individuals with weight $w = 0$.
 
-  Combining this research to now show that the the \autoref{model:eq:jumpdiffusion} can be transformed using the logarithmic change of variables and appropriate change of function to have a constant solution as \cite{benoit2004} discusses.
+  Combining this research to show that \autoref{model:eq:jumpdiffusion} can be transformed using the logarithmic change of variables and appropriate change of function to have a constant solution as \cite{benoit2004} discusses.
 
   \subsection{Logarithmic Scale}
-  \cite{sheldon1967}, who coincidentally first introduces the idea of a size spectrum to organize counts of particles in the ocean, stipulates the fundamental conjecture that the total mass within logarithmically spaced size groups was constant over the size range from bacteria to whales.
+  \cite{sheldon1967}, who first introduced the idea of a size spectrum to organise counts of particles in the ocean, stipulates the fundamental conjecture that the total mass within logarithmically spaced size groups was constant over the size range from bacteria to whales.
 
-  Interpreting this conjecture biologically \cite{silvert1980} poses that the total mass of prey is the same as the mass of its predators, but can also be written in terms of the number spectrum, where the number of individuals with size m per volume is described by a density function $N(w) \propto w^{-\gamma}$ (the same as the work of \cite{benoit2004}).
+  Interpreting this conjecture biologically \cite{silvert1980} poses that the total mass of prey is the same as the mass of their predators, but can be written in terms of the number spectrum, where the number of individuals with size $m$ per volume is described by a density function $N(w) \propto w^{-\gamma}$. Which has later been confirmed by \cite{benoit2004}.
 
-  Since these conjectures assume a logarithmic weight scale, we now perform a change of variables from \autoref{model:eq:jumpdiffusion} using the dimensionless variable $x = \log{w}$ assuming that $\phi(x) \mathrm{d}x = u(w) \mathrm{d}w$. Following \autoref{theory:eq:jumptransport} that
+  Since these conjectures assume a logarithmic weight scale, we perform a change of variables from \autoref{model:eq:jumpdiffusion} using the dimensionless variable $x = \log{w}$ assuming that $\phi(x) \mathrm{d}x = u(w) \mathrm{d}w$. Following \autoref{theory:eq:jumptransport} we have
 
   \begin{equation}
     u_t = - (g \cdot u)_w - \mu \cdot u + \frac{1}{2} (D \cdot u)_{ww}
@@ -77,14 +77,29 @@
     \phi_t = - (\hat{g} \cdot \phi)_x - \hat{\mu} \cdot \phi + \frac{\e{-x}}{2} \left( \left( \hat{D} \cdot \phi \right)_{xx} - \left( \hat{D} \cdot \phi \right)_x \right).
   \end{equation}
 
-  However if we are the maintain a constant steady state as stipulated by \cite{sheldon1967} then we must perform a simple change of function. The steady state $u(w) \propto w^{\gamma}$ reduces to $\phi(x) \propto \e{x(\gamma +1)}$, which is clearly not constant. However if we reduce to a constant by taking $\e{\gamma x} \rho(x) = \phi(x)$ then we have our constant but $\rho$ is governed by the more complicated equation
+  However, if we are to maintain a constant steady state as stipulated by \cite{sheldon1967}, we must perform a simple change of variables. The steady state $u(w) \propto w^{\gamma}$ reduces to $\phi(x) \propto \e{x(\gamma +1)}$, which is clearly not constant. If we reduce to a constant by taking $\e{\gamma x} \rho(x) = \phi(x)$ then we have our constant but $\rho$ is governed by the more complicated equation
 
-  \begin{equation}
+  \begin{equation} \label{model:eq:logconstanteq}
     \e{\gamma x} \rho_t = - (\bar{g} \cdot \rho)_x - \bar{\mu} \e{\gamma x} \rho + \frac{\e{-x}}{2} \left( \left( \bar{D} \cdot \rho \right)_{xx} - \left( \bar{D} \cdot \rho \right)_x \right).
   \end{equation}
 
-  % TODO: Check Calculation and write constant steady state
+  for transformed coefficients $\bar{g}, \bar{\mu}, \bar{D}$.
+
   \subsection{Constant Steady State}
+  Following the change of variables $\e{\gamma x} \rho(x) \mathrm{d}x = u(w) \mathrm{d}w$ we find that the coefficients of \autoref{model:eq:logconstanteq} read
+  \begin{eqnarray}
+    \bar{g}(x)  &=& \int K \e{x' + (\alpha + \gamma - 1) x} S(\e{x - x'}) \e{\gamma x'} \rho(x') \: \mathrm{d}x' \\
+    \bar{d}(x)  &=& \int K^2 \e{2x' + (\alpha + \gamma - 1) x} S(\e{x - x'}) \e{\gamma x'} \rho(x') \: \mathrm{d}x' \\
+    \bar{\mu}(x) &=& \int \e{\alpha x'} S(\e{x' - x}) \e{\gamma x'} \rho(x') \: \mathrm{d}x'.
+  \end{eqnarray}
+
+  Taking the same assumption as \cite{datta2011} that $\alpha + \gamma - 1 = 0$ and substituting $\rho(x) = C$ as the steady state, we can find an equation for $\alpha$ which will guarantee a constant steady state. Cancelling some factors and taking the convention that $r = x - w'$ the steady state condition for the McKendrick-von Foerster Equation with diffusion reads
+
+  \begin{equation} \label{model:eq:steadystatecondition}
+    0 = \int S(\e{r}) \left(-1 + \alpha K \e{(\alpha + 1)r} + + \alpha (\alpha + 1) \frac{K}{2} \e{(\alpha + 2)r} \right) \: \mathrm{d}r
+  \end{equation}
+
+  while if we do not include the diffusion term, we can ignore the $K^2$ terms in \autoref{model:eq:steadystatecondition}.
 
   \section{Summary}
   In this chapter we have outlined the realised equations that will be used in \autoref{chapter:method}. Next we will discuss some of the methods that we can use to approach these equations analytically and numerically.

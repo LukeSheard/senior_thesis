@@ -22,7 +22,7 @@
 
   as an approximation to $L(u)$.
 
-  \subsection{Courant Condition}
+  \subsection{Courant Condition} \label{method:sec:courant}
   At this point one might question of the choice of the downwind scheme (backwards difference) as a choice for the spatial derivative. This is is ultimately for stability of the overall scheme. As discussed in \autoref{chapter:fdes} solutions to partial differential equations have an analytic domain of dependence. We saw the domain of dependence for the advection equation in \autoref{diff:fig:domainofdep} and the McKendrick-von Foerster Equation has the same domain of dependence.
 
   The work of \cite{courant1928} researched the idea of a \emph{Courant Number}, which in a simple terms says that the numerical domain of dependence - the region on which the numerical solution depends for information about it's solution - must contain the analytic domain of dependence.
@@ -161,7 +161,7 @@
 
   While problems in partial differential equation theory do have numerical methods the study of the non-linear equations is still in it's infancy and methods are not thoroughly developed. Much of the research and time spent around constructing our attempt at solving the McKendrick-von Foerster Equation with diffusion and non-linear coefficients has come from studying the problem with constants instead of functions and experimentation with approximations which are stable for those methods.
 
-  Clearly from our study in \autoref{method:fig:diffusionKChange} and \autoref{method:fig:diffusionSolution} we see that while the diffusion term can greatly improve the stability of the solution to the equations we will need to study the death term $\mu(w) \cdot u(t, w)$ if we are to avoid this dominating the derivative and making the finite difference equation converge to a $u(t, x) = 0$ steady state solution. 
+  Clearly from our study in \autoref{method:fig:diffusionKChange} and \autoref{method:fig:diffusionSolution} we see that while the diffusion term can greatly improve the stability of the solution to the equations we will need to study the death term $\mu(w) \cdot u(t, w)$ if we are to avoid this dominating the derivative and making the finite difference equation converge to a $u(t, x) = 0$ steady state solution.
 
 
 \end{document}
