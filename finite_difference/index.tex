@@ -3,21 +3,21 @@
 \begin{document}
 
   \chapter{Mathematics of Discretization}\label{chapter:fdes}
-  The major benefit of studying equations which hold the form of a Transport equation is the large body of research of their solutions and behaviour. We begin this chapter by considering the most basic transport equation, the Advection Equation, which will allow the introduction of finite difference techniques.
+  The major benefit of studying equations which hold the form of a Transport equation is the large body of research of their solutions and behaviour. We begin this chapter by considering the most basic Transport Equation, the Advection Equation, which will allow the introduction of finite difference techniques.
 
   Following this we discuss the theory of errors for finite difference equations and how these determine the convergence and stability of the solutions when difference approximations are used with in the equations.
 
   \section{Advection Equation}
-  The Advection Equation is a simple hyperbolic partial differential equation, in one dimension we take
+  The Advection Equation is a simple hyperbolic partial differential equation. In one dimension we take
 
   \begin{equation} \label{diff:eq:advection}
     \frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x} = d u,
   \end{equation}
 
-  for some transfer velocity $v$ and destruction rate $d$ on the domain $\mathbb{R}^+ \times R$ for some $R \subseteq \mathbb{R}$. The linear advection has been studied extensively and thus we can gain some insight into potential issues that might occur in more complicated equations such as \autoref{model:eq:logscale}.
+  for some transfer velocity $v$ and destruction rate $d$ on the domain $\mathbb{R}^+ \times R$ for some $R \subseteq \mathbb{R}$. The linear advection has been studied extensively and we can gain some insight into potential issues that might occur in more complicated equations such as \autoref{model:eq:logscale}.
 
   \subsection{Analytic Solution}
-  As with ordinary differential equations, partial differential equations can be solved with the ``method of characteristics'' (or method of lines). Consider \autoref{diff:eq:advection} on the domain $\mathbb{R}^+ \times \mathbb{R}^+$ so that when the correct boundary conditions are applied the problem aligns with the McKendrick-von Foerster Equation. Then we define some boundary value and initial value problem (BVP and IVP):
+  As with ordinary differential equations, partial differential equations can be solved with the ``method of characteristics'' (or method of lines). Consider \autoref{diff:eq:advection} on the domain $\mathbb{R}^+ \times \mathbb{R}^+$ so that when the correct boundary conditions are applied, the problem aligns with the McKendrick-von Foerster Equation. Then we define some boundary value and initial value problem (BVP and IVP):
 
   \begin{eqnarray} \label{diff:eq:advectionbvp}
     u_t + v \, u_x  &=& + d \, u \nonumber \\
@@ -34,7 +34,7 @@
   \end{array} \right.
   \end{equation}
 
-  along the characteristics $x - vt = C$. We note that the McKendrick-von Foerster Equation will take a form similar to this if the growth and death terms are constants, but the problem will become more complicated if the coefficients are functions of $t, x$ or non-linear. However this problem does allow us to introduce the idea of \emph{domain of dependence}.
+  along the characteristics $x - vt = C$. We note the McKendrick-von Foerster Equation will take a form similar to this if the growth and death terms are constants, but the problem will become more complicated if the coefficients are functions of $t, x$ or non-linear. However this problem does allow us to introduce the idea of \emph{domain of dependence}.
 
   \begin{figure}[htb]
     \centering
@@ -57,21 +57,21 @@
       \draw[red, <-] (6, 0) -- (7, 1);
     \end{tikzpicture}
 
-    \caption{The characteristic lines for the solution of \autoref{diff:eq:advectionsol} with constant coefficients. There is no overlap between the lines which means that the solution can be smooth if the boundary conditions along $\Gamma$ are smooth. The analytic domain of dependence traverses the direction of each arrowhead line. \label{diff:fig:domainofdep}}
+    \caption{The characteristic lines for the solution of \autoref{diff:eq:advectionsol} with constant coefficients. There is no overlap between the lines which means the solution can be smooth if the boundary conditions along $\Gamma$ are smooth. The analytic domain of dependence traverses the direction of each arrowhead line. \label{diff:fig:domainofdep}}
   \end{figure}
 
-  Given any BVP and/or IVP on $U \subseteq \mathbb{R}^n$ with solution $\varphi$, the domain of dependence for for any $x \in U$ is the set $V \subseteq U$ that $\varphi(x)$ depends on to be calculated. \autoref{diff:fig:domainofdep} shows the characteristic lines for \autoref{diff:eq:advectionsol}; the blue lines represent characteristics which depend on the time axis boundary condition. The red arrows depend on the spatial axis initial condition. Looking at the analytic solution to \autoref{diff:eq:advectionbvp} we see that the initial condition is carried along the characteristic.
+  Given any BVP and/or IVP on $U \subseteq \mathbb{R}^n$ with solution $\varphi$, the domain of dependence for any $x \in U$ is the set $V \subseteq U$ that $\varphi(x)$ depends on to be calculated. \autoref{diff:fig:domainofdep} shows the characteristic lines for \autoref{diff:eq:advectionsol}; the blue lines represent characteristics which depend on the time axis boundary condition. The red arrows depend on the spatial axis initial condition. Looking at the analytic solution to \autoref{diff:eq:advectionbvp} we see that the initial condition is carried along the characteristic.
 
   While it is not obvious how this definition will be useful now, it will become extremely important in the analysis of stability of the numerical methods that we discuss in the \autoref{method:sec:courant}.
 
   \subsection{Numerical Solutions to the Advection Equation} \label{diff:sec:fdesintro}
-  When constructing a numerical method for solving the Advection Equation we can first consider writing the equation using limits.
+  When constructing a numerical method for solving the Advection Equation we can consider writing the equation using limits.
 
   \begin{equation} \label{diff:eq:finiteadvection}
     \lim_{\Delta t \to 0} \frac{u(t + \Delta t, x) - u(t, x)}{\Delta t} + v \lim_{\Delta x \to 0} \frac{u(t, x + \Delta x) - u(t, x)}{\Delta t} = d u(t, x).
   \end{equation}
 
-  If we simply ignore the limits and substituted Newtonian infinitesimals $\Delta t, \Delta x$ we find
+  If we ignore the limits and substituted Newtonian infinitesimals $\Delta t, \Delta x$ we find
 
   \begin{equation} \label{diff:eq:advectionfde}
     \frac{u(t + \Delta t, x) - u(t, x)}{\Delta t} + v \frac{u(t, x + \Delta x) - u(t, x)}{\Delta x} = d u(t, x)
@@ -82,7 +82,7 @@
   \section{Difference Equations}
   In general, most partial differential equations do not have explicit analytic solutions. Consequently we must find accurate numerical approximations and methods for solving these problems. In this section we introduce the required mathematics for understanding the numerical methods used to solve problems in partial differential equation theory.
 
-  \cite{boole1880} writes \emph{``Differential Calculus is occupied about the limits to which such ratios approach as the increments are indefinitely diminished.'' However, ``The Calculus of Finite Differences may be strictly defined as the science which is occupied about the ratios of the simultaneous increments of quantities mutually dependent.''} In simple terms, the calculus of finite differences is only concerned about ratios of infinitesimals, in line with the ideas of Newtonian calculus.
+  \cite{boole1880} writes \emph{``Differential Calculus is occupied about the limits to which such ratios approach as the increments are indefinitely diminished.'' However ``The Calculus of Finite Differences may be strictly defined as the science which is occupied about the ratios of the simultaneous increments of quantities mutually dependent.''} In simple terms, the calculus of finite differences is only concerned about ratios of infinitesimals, in line with the ideas of Newtonian calculus.
 
   In \autoref{diff:eq:finiteadvection} we broke down the limits in the derivitives by simply ignoring the limit, in this section we reconstruct this equation using difference equations derived from \cite{boole1880} and \cite{hildebrand1987}.
 
@@ -110,13 +110,13 @@
     u'(x) = \lim_{\delta x \to 0} \frac{\Delta[u](x)}{\delta x}
   \end{equation}
 
-  which can easily be extended to higher dimensions.
+  which can be extended to higher dimensions.
 
-  \subsection{Taylor's Theorem,  Big \& little O Notation}
-  When calculating an equation we can replace terms by their approximate sizes if the exact size is not required. In such cases we generally replace terms by their big (or little) O size. If $f, g : \mathbb{R} \to \mathbb{R}$, the informal assertions that $f(x)$ is big-O (or little-O) of $g(x)$ can be defined rigorously by comparing their sizes in limits around a point.
+  \subsection{Taylor's Theorem, Big and Little O Notation}
+  When calculating an equation we can replace terms by their approximate sizes if the exact size is not required. In such cases we generally replace terms by their big (or little) O size. If $f, g : \mathbb{R} \to \mathbb{R}$, the informal assertions that $f(x)$ is big-O (or little-o) of $g(x)$ can be defined rigorously by comparing their sizes in limits around a point.
 
   \begin{definition}[Big O]
-    We define formally that
+    We define
     \begin{equation}
       f(x) = O(g(x))
     \end{equation}
@@ -131,13 +131,13 @@
     \begin{equation}
       f(x) = o(g(x))
     \end{equation}
-    as $x \to a$ if
+    as $x \to a$ if and only if
     \begin{equation}
       \lim_{x \to a} \left\vert \frac{f(x)}{g(x)} \right\vert = 0
     \end{equation}
   \end{definition}
 
-  Intuitively calling $f(x)$ big-O of $g(x)$ states that $f(x)$ is ``about as big'' as $g(x)$, while if $f(x)$ is little-o of $g(x)$ then it is ``much smaller'' in size that $g(x)$. A very classical theorem in calculus is Taylor's theorem, which is used to construct finite difference approximations.
+  Intuitively calling $f(x)$ big-O of $g(x)$ states that $f(x)$ is ``about as big'' as $g(x)$, while if $f(x)$ is little-o of $g(x),$ then it is ``much smaller'' in size than $g(x)$. A very classical theorem in calculus is Taylor's theorem which is used to construct finite difference approximations.
 
   \begin{theorem}[Taylor]
     If $u : \mathbb{R} \to \mathbb{R}$ is $k$ times differentiable in a region around $x \in \mathbb{R}$ then $u(x + \delta x)$ can be written as
@@ -168,7 +168,7 @@
   \end{equation}
 
   \section{Finite Difference Equation Errors}
-  Since finite difference equations have become a staple in numerical analysis there are many texts that supply the different coefficients required to approximate derivatives accurately. By combining $n^{th}$ forward and backward differences we can construct higher order approximations to derivatives at higher orders and higher orders of accuracy. \cite{fornberg1988} provides a details derivation as well as a set of tables for almost all derivatives required for general partial differential equation problems up to high orders in both accuracy and order. We define a \emph{finite difference scheme} as a particular choice of approximation for a collection of derivatives.
+  Since finite difference equations have become a staple in numerical analysis there are many texts that supply the different coefficients required to approximate derivatives accurately. By combining $n^{th}$ forward and backward differences we can construct higher order approximations to derivatives at higher orders and higher orders of accuracy. \cite{fornberg1988} provides a detailed derivation as well as a set of tables for almost all derivatives required for general partial differential equation problems up to high orders in both accuracy and order. We define a \emph{finite difference scheme} as a particular choice of approximation for a collection of derivatives.
 
   However, as with all numerical problems, issues arise when constructing approximations due to errors that occur with the generation of those approximations themselves. In this section we begin to outline the two main types of error that occur in approximations and introduce the idea of consistency and convergence.
 
@@ -179,9 +179,13 @@
     L(u) = \frac{\partial u(t, x)}{\partial t} - \mathcal{L}(u(t, x)),
   \end{equation}
 
-  where $\mathcal{L}$ is an $m$ times differential operator in $x$ (with most cases satisfying $m < 3$). Given this we have that if $u$ is in the set of real valued functions, $C^m$, which are one times differentiable in $t$ and $m$ times differentiable in $x$ on some region in the plane $\Omega = \mathbb{R}^+ \times U$ for some $U \subset \mathbb{R}^+$ then $L : C^M \to C$. We aim to solve the partial differential equation $L(u) = 0$ with for specified boundary conditions on $\partial \Omega$.
+  where $\mathcal{L}$ is an $m$ times differential operator in $x$ (with most cases satisfying $m < 3$). Given this we have that if $u$ is in the set of real valued functions, $C^m$, which are one times differentiable in $t$ and $m$ times differentiable in $x$ on some region in the plane $\Omega = \mathbb{R}^+ \times U$ for some $U \subset \mathbb{R}^+$ then $L : C^M \to C$. We aim to solve the partial differential equation $L(u) = 0$ for specified boundary conditions on $\partial \Omega$.
 
-  To do this we first discretise our domain into a mesh grid. In \autoref{diff:fig:meshgrid} we discretise an area of the plane $[0, T] \times [0, X]$ into a grid spaced with $\delta x = k$ and $\delta t = h$. We index the time axis by $n$ and the spatial axis by $j$, thus for any function $u : [0, T] \times [0, X] \to \mathbb{R}$ we write $u(t, x) = u(n h, j k) = u^n_j$.
+  To do this we first discretise our domain into a mesh grid. In \autoref{diff:fig:meshgrid} we discretise an area of the plane $[0, T] \times [0, X]$ into a grid spaced with $\delta x = k$ and $\delta t = h$. We index the time axis by $n$ and the spatial axis by $j$, thus for any function $u : [0, T] \times [0, X] \to \mathbb{R}$ we write
+
+  \begin{equation}
+    u(t, x) = u(n h, j k) = u^n_j
+  \end{equation}
 
   \begin{figure}[hbt]
     \centering
@@ -223,12 +227,14 @@
   \end{example}
 
   \subsection{Consistency} \label{diff:sec:consistency}
-  When considering how appropriate a choice of finite difference equation is to model a particular partial differential equation there are three issues that may arise. The most easy of these to understand is consistency. The broad definition of consistency is that a finite difference equation $D$ is consistent with a partial differential equation $L$ if the truncation error of $D$ from $L$ tends to $0$ for smaller mesh grid approximations.
+  When considering how appropriate a choice of finite difference equation is to model a particular partial differential equation there are three issues that may arise.
+
+  The first of these we introduce is \emph{consistency}, its broad definition is that a finite difference equation $D$ is consistent with a partial differential equation $L$ if the truncation error of $D$ from $L$ tends to $0$ for smaller mesh grid approximations.
 
   To introduce formally consistency consider a partial differential equation in the form of \autoref{diff:eq:pdeprob} with a true solution $\Phi$. Suppose we take any finite difference equation $D^n_j$ to approximate \autoref{diff:eq:pdeprob} and let $\phi$ be a non-zero solution to $D(u) = 0$.
 
   \begin{definition}[Truncation Error]
-    For any problem described above, the \emph{Truncation error} for a function $\psi : \Omega \to \mathbb{R}$ at any grid point $(n, j)$ is given as
+    For any problem described above, the \emph{truncation error} for a function $\psi : \Omega \to \mathbb{R}$ at any grid point $(n, j)$ is given as
 
     \begin{equation}
       T^n_j(\psi) = D^n_j(\psi) - L^n_j(\psi)
@@ -247,7 +253,7 @@
     \end{equation}
   \end{definition}
 
-  If $v = \Phi$, then $T^n_j(v) = \tau^n_j$, so another definition of consistency is that the limiting value of the local truncation error is $0$. Suppose that we review \autoref{diff:eq:advectionfde} as an approximation to \autoref{diff:eq:advection}, having engineered the scheme using \cite{fornberg1988} seen in \autoref{diff:eq:advectionexample}, we know that rearranging to gain an equation in the form $D(u) = 0$ the truncation error can be written as
+  If $v = \Phi$, then $T^n_j(v) = \tau^n_j$, so another definition of consistency is the limiting value of the local truncation error is $0$. Suppose we review \autoref{diff:eq:advectionfde} as an approximation to \autoref{diff:eq:advection}, having engineered the scheme using \cite{fornberg1988} seen in \autoref{diff:eq:advectionexample}, we know that rearranging to gain an equation in the form $D(u) = 0$ the truncation error can be written as
 
   \begin{equation}
     T(v) = D(v) - L(v) = O(h) + v O(k) - d O(1) = O(h) + O(k)
@@ -256,7 +262,7 @@
   and thus as $h, k \to 0$ then $T(v) \to 0$ and we have a consistent difference equation of order $p = 1$.
 
   \subsection{Stability}
-  Numerical stability theory stems directly from analytical stability theory. Suppose that $L(u)$ is a partial differential equation problem with two analytic solutions $\Psi_1$ and $\Psi_2$, we can analyse how likely a perturbation in the initial condition is to affect the system as it tends to one of the two analytic solutions. This principle applies to numerical methods. The essential idea defining stability is that the numerical process should not cause any small perturbations introduced through rounding at any stage to grow and ultimately dominate the solution, similar to the study of whether a small perturbation introduced into an analytic solution will cause the solution to tend to a dominant solution.
+  Numerical stability theory stems directly from analytical stability theory. Suppose that $L(u)$ is a partial differential equation problem with two analytic solutions $\Psi_1$ and $\Psi_2$. We can analyse how likely a perturbation in the initial condition is to affect the system as it tends to one of the two analytic solutions. This principle applies to numerical methods. The essential idea defining stability is that the numerical process should not cause any small perturbations introduced through rounding at any stage to grow and ultimately dominate the solution, similar to the study of whether a small perturbation introduced into an analytic solution will cause the solution to tend to a dominant solution.
 
   For mathematical analysis a definition of stability is given with relation to the growth of the exact solution to the finite difference equation. Therefore, if rounding errors of perturbations to the solution are introduced at any stage in time, these will be bounded if the exact solution is bounded.
 
@@ -303,7 +309,7 @@
     and thus has eigenvalues $\lambda_j = a + 2 \sqrt{bc} \cos{\left( \frac{j \pi}{J} \right)}$ for $j = 1, ... , J-1$ if there are $J$ points in the mesh grid along the $x$ axis. Considering the worst case for this eigenvalue spectrum will yield a relation between $h$ and $k$ that must be satisfied for the method to be stable.
   \end{example}
 
-  This way of analysing the stability of a scheme is not easily generalised since it involves finding the eigenvalues of the corresponding S-matrix. Therefore, we look at a different way of determining stability - the Fourier method or von Neumann method.
+  This way of analysing the stability of a scheme is not easily generalised since it involves finding the eigenvalues of the corresponding S-matrix. Therefore we look at a different way of determining stability - the Fourier method or von Neumann method.
 
 
   \subsubsection{Fourier Method}
@@ -331,7 +337,7 @@
     \left\vert G(w) \right\vert \leq 1
   \end{equation}
 
-  for all $0 \leq \omega \Delta x \leq \pi$. If a finite difference equation is stable then it is said to be conditionally stable if there is dependence on $G(\omega)$ for the stability condition to hold, otherwise the scheme is unconditionally stable. The Fourier method is the most widely used but can break down for non-linear methods since it can be more difficult to solve for $G(\omega)$.
+  for all $0 \leq \omega \Delta x \leq \pi$. If a finite difference equation is stable then it is said to be conditionally stable if there is dependence on $G(\omega)$ for the stability condition to hold, otherwise the scheme is unconditionally stable. Whilst the Fourier method is the most widely used but can break down for non-linear methods since it can be more difficult to solve for $G(\omega)$.
 
   \section{Convergence Theory}
   In \autoref{diff:sec:consistency} we defined the Truncation Error of a finite difference equation as the approximation error for a partial differential equation. In this section we deal with the numerical error.
@@ -344,10 +350,10 @@
     \end{equation}
   \end{definition}
 
-  Broadly speaking, we define convergence of a problem in a simple way. Does our numerical solution accurately model the real solution? However the numerical error and true solution, and thus convergence, of a general problem is quite difficult to calculate since it relies on the knowledge of the solution. Thus more theory is needed to deal with this issue. Before we move on to this theory we give the rigorous definition of convergence.
+  Broadly speaking, we define convergence of a problem in a simple way. Does our numerical solution accurately model the real solution? However the numerical error and true solution, and thus convergence, of a general problem is quite difficult to calculate since it relies on the knowledge of the solution. Thus more theory is needed to deal with this issue. Before we move onto this theory we give the rigorous definition of convergence.
 
   \begin{definition}[Convergence]
-    Given a BVP/IVP problem with true solution $\Phi(t, x)$ and a finite difference equation $D(u)$, with $\Delta t = h$ and $\Delta x = k$. The solution $D$, $\phi$, is said to converge to $\Phi$ if
+    Given a BVP/IVP problem with true solution $\Phi(t, x)$ and a finite difference equation $D(u)$, with $\Delta t = h$ and $\Delta x = k$, the solution $D$, $\phi$, is said to converge to $\Phi$ if
 
     \begin{equation}
       \lim_{k \to 0} \left( \max_{n = 0, 1, ..., T / k} || \boldsymbol\phi_j - \boldsymbol\Phi_j ||_k \right) = 0
@@ -364,6 +370,6 @@
 
   In plain terms, the theorem states that \textbf{Consistency + Stability implies convergence}. This is an extremely useful result which allows numerical mathematicians to ignore issues with finding the true solution of a partial differential equation to calculate the convergence of finite difference equations.
 
-  The issue that arises from this theorem is that it only holds for \emph{linear} problems. Thus in our research on \autoref{model:eq:logscale} with non-linear coefficients the theorem will break down. Luckily \autoref{diff:theorem:lax} has been extended by the work of \cite{rosinger2008} who classes a more general set of partial differential equations using nonlinear semigroup theory. This allows us to continue with the problem for non-linear equations assuming that we can treat our coefficients in finite difference approximations for the McKendrick-von Foerster Equation with diffusion as if they were linear for stability and consistency calculations.  
+  The issue that arises from this theorem is that it only holds for \emph{linear} problems. Thus in our research on \autoref{model:eq:logscale} with non-linear coefficients, the theorem will break down. Luckily \autoref{diff:theorem:lax} has been extended by the work of \cite{rosinger2008} who classes a more general set of partial differential equations using nonlinear semigroup theory. This allows us to continue with the problem for non-linear equations assuming that we can treat our coefficients in finite difference approximations for the McKendrick-von Foerster Equation with diffusion as if they were linear for stability and consistency calculations.
 
 \end{document}

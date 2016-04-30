@@ -8,13 +8,13 @@
 \usepackage{xcolor}
 \usepackage[some]{background}
 
-\definecolor{titlepagecolor}{cmyk}{1,.60,0,.40}
+\definecolor{titlepagecolor}{cmyk}{1, .60, 0, .40}
 \backgroundsetup{
   scale=1,
   angle=0,
   opacity=1,
-  contents={\begin{tikzpicture}[remember picture,overlay]
-   \path [fill=titlepagecolor] (current page.west)rectangle (current page.north east);
+  contents={\begin{tikzpicture}[remember picture, overlay]
+   \path [fill=titlepagecolor] (current page.west) rectangle (current page.north east);
    \draw [color=white, very thick] (5,0)--(5,0.5\paperheight);
   \end{tikzpicture}}
 }
@@ -100,9 +100,7 @@
   \raggedright
   \allowdisplaybreaks
 
-  {\setstretch{1.0}
-    \subfile{abstract/index}
-  }
+  \subfile{abstract/index}
 
   \subfile{background/index}
 
