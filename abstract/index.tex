@@ -62,7 +62,7 @@
   \setstretch{1.5}
   \pagenumbering{arabic}
 
-  The study of partial differential equations has always been of interest due to their close relation to modelling real world ecosystems. In particular a class of partial differential equations called transport equations relate real world convection-diffusion systems to analytic equations and are studied extremely widely. In this project we study the details around one particular transport equation: the McKendrick-von Foerster Equation.
+  The study of partial differential equations has been of interest due to their close relation to modelling real world ecosystems. In particular a class of partial differential equations called Transport Equations relate real world convection-diffusion systems to analytic equations and are studied extremely widely. In this project we study the details around one particular Transport Equation: the McKendrick-von Foerster Equation.
 
   \begin{equation} \label{intro:eq:mvf}
     \frac{\partial u(t, w)}{\partial t} = - \frac{\partial}{\partial w} \left(g(w) \cdot u(t, w) \right) - \mu(w) \cdot u(t, w)
@@ -78,7 +78,7 @@
     & + k(w - Kw', w')\phi(w - Kw')\phi(w')) \: \mathrm{d}w'.
   \end{align}
 
-  In \autoref{chapter:sizetheory} we discuss the historical background and derivation of the McKendrick-von Foerster Equation. We study similarities between the equation transport equations which will serve as the basis for our approach towards constructing finite difference approximations for the equations in \autoref{chapter:method}. Lastly we give a short overview of the Jump-Growth Equation derived by \cite{datta2010}. We show that the McKendrick-von Foerster Equation with diffusion is an approximation of the Jump-Growth Equation and focus on the simpler equation given by this approximation.
+  In \autoref{chapter:sizetheory} we discuss the historical background and derivation of the McKendrick-von Foerster Equation. We study similarities between the equation Transport Equations which will serve as the basis for our approach towards constructing finite difference approximations for the equations in \autoref{chapter:method}. Lastly we give a short overview of the Jump-Growth Equation derived by \cite{datta2010}. We show that the McKendrick-von Foerster Equation with diffusion is an approximation of the Jump-Growth Equation and focus on the simpler equation given by this approximation.
 
   \autoref{chapter:modelequations} constructs the model equations that will be used in \autoref{chapter:method} by considering the derivation of the coefficients in the Jump-Growth Equation. In the second half of the chapter we consider the steady states of these equations which will be useful when analysing the solutions to the numerical approximations as we can consider how close to the steady states the solutions are.
 
