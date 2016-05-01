@@ -7,6 +7,7 @@
 % Title page
 \usepackage{xcolor}
 \usepackage[some]{background}
+\usepackage{tabularx}
 
 \definecolor{titlepagecolor}{cmyk}{1, .60, 0, .40}
 \backgroundsetup{
@@ -20,21 +21,11 @@
 }
 
 \makeatletter
-\def\printauthor{%
-  {\large \@author}}
-\makeatother
-
-\makeatletter
 \def\printtitle{%
   \textcolor{white}{\fontsize{32px}{3cm}\selectfont \@title}}
 \makeatother
 
 \title{Finite Difference Schemes for the McKendrick-von Foerster Equation}
-\author{
-  Luke Sheard \\
-  MMath Project 2016 \\
-  University of York
-}
 
 % Font Encoding
 \usepackage[default, extralight, semibold]{sourceserifpro}
@@ -99,6 +90,37 @@
   \def\biblio{}
   \raggedright
   \allowdisplaybreaks
+
+  \begin{titlepage}
+    \BgThispage
+    \newgeometry{left=1.5cm,right=6cm,bottom=2cm}
+    \vspace*{0.3\textheight}
+    \noindent
+    \printtitle
+    \vspace*{2cm}\par
+    \begin{minipage}{1.1\linewidth}
+      \begin{minipage}[c]{0.25\linewidth}
+        \begin{flushright}
+          MMath Project 2016
+          University of York
+        \end{flushright}
+      \end{minipage} \hspace{15pt}
+      %
+      \begin{minipage}{0.02\linewidth}
+        \rule{1pt}{225pt}
+      \end{minipage} \hspace{25pt}
+      %
+      \begin{minipage}[c]{0.73\linewidth}
+        \textit{Author}   \hfill   \textit{Supervisor} \\
+        Luke Sheard       \hfill   Dr. Gustav Delius
+      \end{minipage}
+    \end{minipage}
+    \noindent
+  \end{titlepage}
+  \restoregeometry
+
+  \onehalfspacing
+  \setstretch{1.5}
 
   \subfile{abstract/index}
 
